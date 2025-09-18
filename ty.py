@@ -6,6 +6,6 @@ try:
     cislo = int(vstup)
 while type(cisla) != int:
     input(f"zadej cesla")
-while type(cisla) != int:
+while type(cisla) != int:aa a 
     input(f"zadej cisla")
 print(f"{cislo}+{cisla} ")
