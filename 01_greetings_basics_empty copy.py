@@ -18,6 +18,7 @@ import os
 os.system("cls")
 
 
+
 ##########################################################
 ### Základní verze - vždy stejná odpověď
 
