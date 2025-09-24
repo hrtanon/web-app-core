@@ -1,5 +1,7 @@
+import csv
 import os
 import math
+import random
 
 os.system('cls')
 odpoved=input(f"chces si cisla volit sam? napis ano pokud chces jinak mas smulu")
@@ -48,5 +50,5 @@ else:
 
 with open("tabulka.csv","w",newline="",encoding="utf-8")as csvfile:
       writer = csv.writer(csvfile)
-      writer.writerows(vysledky)
+      writer.writerow(vysledky)
     
