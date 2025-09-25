@@ -5,7 +5,7 @@ import random
 
 os.system('cls')
 odpoved=input(f"chces si cisla volit sam? napis ano pokud chces jinak mas smulu\n")
-if odpoved== "ano":
+if odpoved.lower()== "ano":
      while True:
         a = input("Zadej číslo chlape: ")
         b = input("Ještě jedno tě nezabije: ")
@@ -16,14 +16,14 @@ if odpoved== "ano":
             break
         except ValueError:
             print("To není číslo! Zkus to znova.")
-        break
+        
+     
 else:
     a= random.randrange(-100,100)
     b= random.randrange(-100,100)
     print(f"tva cisla byla {a,b}")   
 
-a=int(a)
-b=int(b)
+
 
 vysledky=[]
 vysledky.append (f"scitani {a+b}")
@@ -31,10 +31,10 @@ vysledky.append(f"odecitanui {a-b}")
 vysledky.append(f"nadobeni {a*b}")
 vysledky.append(f"mocnana {a**b}")
 
-print(f"sciatni{a + b}")
+print(f"sciatni{a+b}")
 
-print(f"Rozdíl: {a - b}")
-print(f"Násobení: {a * b}")
+print(f"Rozdíl: {a-b}")
+print(f"Násobení: {a*b}")
 
 if b !=0:
     print(a/b)
@@ -43,7 +43,7 @@ if b !=0:
 else:
      print(f"neni mozno delit nulou")
 
-print(f"mocnana : {a ** b}")
+print(f"mocnana : {a**b}")
 
 if a >=0: 
     print(f"Odmocnina z a: {a ** 0.5}")
