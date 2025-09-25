@@ -6,15 +6,17 @@ import random
 os.system('cls')
 odpoved=input(f"chces si cisla volit sam? napis ano pokud chces jinak mas smulu")
 if odpoved== "ano":
-     a=input(f"zadej cisla chlape")
-     b=input(f"jeste jedno te nezabije")
-     while not a.isdigit() or not b.isdigit():
-        print(f"to neni cislo")
-        a=input(f"zadej cisla chlape")
-        b=input(f"jeste jedno te nezabije")
-        if a.isdigit() and b.isdigit():
-            print(f"takze cisla zadavt umis")
+     while True:
+        a = input("Zadej číslo chlape: ")
+        b = input("Ještě jedno tě nezabije: ")
+        try:
+            a = int(a)
+            b = int(b)
+            print("Takže čísla zadávat umíš!")
             break
+        except ValueError:
+            print("To není číslo! Zkus to znova.")
+        break
 else:
     a= random.randrange(-100,100)
     b= random.randrange(-100,100)
@@ -29,7 +31,7 @@ vysledky.append(f"odecitanui {a-b}")
 vysledky.append(f"nadobeni {a*b}")
 vysledky.append(f"mocnana {a**b}")
 
-print(f"{a + b}")
+print(f"sciatni{a + b}")
 print(a-b)
 print(a*b)
 if b !=0:
@@ -41,11 +43,11 @@ else:
 
 print(a**b)
 
-if a >0: 
+if a >=0: 
     print(a**0.5)
     vysledky.append(f"odmocnina {a**0.5}")  
 else:
-    print(f"math error")
+    print(f"odmocninu neni mozno urcit")
 
 
 with open("tabulka.csv","w",newline="",encoding="utf-8")as csvfile:
