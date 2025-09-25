@@ -4,7 +4,7 @@ import math
 import random
 
 os.system('cls')
-odpoved=input(f"chces si cisla volit sam? napis ano pokud chces jinak mas smulu")
+odpoved=input(f"chces si cisla volit sam? napis ano pokud chces jinak mas smulu\n")
 if odpoved== "ano":
      while True:
         a = input("Zadej číslo chlape: ")
@@ -32,8 +32,10 @@ vysledky.append(f"nadobeni {a*b}")
 vysledky.append(f"mocnana {a**b}")
 
 print(f"sciatni{a + b}")
-print(a-b)
-print(a*b)
+
+print(f"Rozdíl: {a - b}")
+print(f"Násobení: {a * b}")
+
 if b !=0:
     print(a/b)
     vysledky.append(f"deleni{a/b}")
@@ -41,10 +43,10 @@ if b !=0:
 else:
      print(f"neni mozno delit nulou")
 
-print(a**b)
+print(f"mocnana : {a ** b}")
 
 if a >=0: 
-    print(a**0.5)
+    print(f"Odmocnina z a: {a ** 0.5}")
     vysledky.append(f"odmocnina {a**0.5}")  
 else:
     print(f"odmocninu neni mozno urcit")
