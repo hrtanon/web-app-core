@@ -5,7 +5,7 @@ os.system("cls")
 
 
 
-def strany_trojuhelniku(strana1,strana2,strana3):
+def strany_trojuhelniku():
     # vyzada stranu kterou zadate pak je vraci jako a,b,c pokud lze trojuhelnik sestrojit 
     # kvuli tomu podminka if  a trouhelnikova nerovnost
     a=strana1=int(input(f"jaká je prvni strana?"))
@@ -15,5 +15,7 @@ def strany_trojuhelniku(strana1,strana2,strana3):
         print(f"nelze sestrojit trojuhelnik s techle stran")
     return a,b,c
     
-print(strany_trojuhelniku())
-# ňefunguje print trojuhelnuku zjistit co tam chybi 
+trojuhelnik = strany_trojuhelniku()
+print(trojuhelnik)
+
+# ňefunguje print trojuhelnuku zjistit co tam chybi
