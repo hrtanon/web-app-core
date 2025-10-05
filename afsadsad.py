@@ -18,15 +18,22 @@ def strany_trojuhelniku():
         a = float(input("Jaká je první strana? "))
         b = float(input("Jaká je druhá strana? "))
         c = float(input("Jaká je třetí strana? "))
+        if a==0  or b==0  or c==0 :
+            print(f"nula zatat preci nemuezs")
+            continue
         
+      
      except ValueError:
         print("Chyba! Zadej prosím číslo.")
         continue
-
-
-     if a+b<c or a+c<b or c+b<a :
-        print(f"nelze sestrojit trojuhelnik s techle stran")
+     if  a<=0 or b<=0 or c<=0 :
+        print("zadej platne cisla")
         continue
+         
+
+     if a+b<=c or a+c<=b or c+b<=a:
+         print(f"nelze sestrojit trojuhelnik s techle stran")
+         continue
     
      return a,b,c
 def uhly_trojuhelniku(a,b,c):
