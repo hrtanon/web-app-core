@@ -48,6 +48,13 @@ def obvod_a_obsah(a,b,c):
    obsah=(s*(s-a)*(s-b)*(s-c))**0.5
    return obvod, obsah
 
+def kruh_vepsana_a_opsana(a,b,c,obsah):
+    S=obsah
+    ops= (a+b+c)/(4 * S )
+    vesp= S/ ((a+b+c)/2)
+    print(f"polomer kruznice opsane  je: {ops:.2f}")
+    print(f"polomer kruznice vepsane  je: {vesp:.2f}")
+    return vesp, ops
     
 
 
@@ -55,7 +62,24 @@ trojuhelnik = strany_trojuhelniku()
 a , b, c = trojuhelnik
 uhly = uhly_trojuhelniku(a, b, c)
 obvod,obsah =obvod_a_obsah(a, b, c)
-print("Strany trojúhelníku:", (a, b, c))
-print("Úhly trojúhelníku (stupně):", uhly)
-print(f"obvod je--> {obvod,obsah}<---obsah")
+print(f"Strany trojúhelníku: a={a:.2f}, b={b:.2f}, c={c:.2f}")
+print(f"Úhly trojúhelníku (stupně): alfa={uhly[0]:.2f}, bravo={uhly[1]:.2f}, charlie={uhly[2]:.2f}")
+print(f"Obvod: {obvod:.2f}, Obsah: {obsah:.2f}")
 
+kruh_vepsana_a_opsana(a,b,c,obsah)
+
+
+
+def vykres(a,b,c):
+   cos_charlie = (a**2+b**2-c**2)/(2*a*b)
+   charlie=math.acos(cos_charlie)
+   x1,y1=0,0
+   x2,y2=a,0
+   x3=b*math.cos(charlie)
+   y3=b*math.sin(charlie)
+   plt.plot([x1,x2,x3],[y1,y2,y3])
+   plt.fill([x1,x2,x3],[y1,y2,y3],"r")
+   plt.gca().set_aspect("equal", adjustable="box")
+   plt.title("trojka")
+   plt.show()
+vykres(a,b,c)
