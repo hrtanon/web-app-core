@@ -31,7 +31,7 @@ def strany_trojuhelniku():
         continue
          
 
-     if a+b<=c or a+c<=b or c+b<=a:
+     if a+b<c or a+c<b or c+b<a:
          print(f"nelze sestrojit trojuhelnik s techle stran")
          continue
      print(f"Strany trojúhelníku: a={a:.2f}, b={b:.2f}, c={c:.2f}, tenhle trrojuhelnik sel sestrojit")
@@ -42,7 +42,7 @@ def uhly_trojuhelniku(a,b,c):
     alfa = math.degrees(math.acos((b**2 + c **2 - a**2)/ (2*b*c)))
     bravo = math.degrees(math.acos((a**2+c**2-b**2)/(2*a*c)))
     charlie = math.degrees(math.acos((b**2+a**2-c**2)/(2*a*b)))
-    print(f"Úhly trojúhelníku (stupně): alfa={uhly[0]:.2f}, bravo={uhly[1]:.2f}, charlie={uhly[2]:.2f}")
+    print(f"Úhly trojúhelníku (stupně): alfa={alfa:.2f}, bravo={bravo:.2f}, charlie={charlie:.2f}")
     return alfa, bravo , charlie
 
 def obvod_a_obsah(a,b,c):
@@ -75,11 +75,6 @@ def typ_troj(a,b,c):
 
 
 # ďefenice promenych do funkci
-trojuhelnik = strany_trojuhelniku() 
-a , b, c = trojuhelnik
-uhly = uhly_trojuhelniku(a, b, c)
-obvod,obsah =obvod_a_obsah(a, b, c)
-d,e,f = uhly
 
 
 
@@ -104,7 +99,7 @@ def vykres(a,b,c):
       # ňastavevi jedna ku jedne
    plt.title("trojka")
    plt.show()
-vykres(a,b,c)
+
 
 
 
@@ -114,8 +109,13 @@ vykres(a,b,c)
 
 def lobyy():
    """inpit volby a pote ocekavane vykresleni zvolene funkce"""
+   
+   a,b,c=strany_trojuhelniku()
+   
+   
+    
    print(f"co se chces dneska dozvedet\n pokud chces znat zda jde trojuhelnik sestavit a jeho typ zadej 1\npokud chces vykresleni trojuhelniku zadej 2")
-   print(f"pokud zase obsah a obvod 3 a pro kruznici opsanou a vepsanou 4")
+   print(f"pokud zase obsah a obvod 3 \n pro kruznici opsanou a vepsanou 4")
    while True:
     try:
          od=float(input(f"tak co?"))
@@ -127,6 +127,7 @@ def lobyy():
         continue
     if od==1:
        strany_trojuhelniku(a,b,c)
+       typ_troj(a,b,c)
        break
     if od==2:
        vykres(a,b,c)
@@ -135,6 +136,7 @@ def lobyy():
        obvod_a_obsah(a,b,c)
        break
     else:
+       obsah=obvod_a_obsah(a,b,c)[1]
        kruh_vepsana_a_opsana(a,b,c,obsah)
        break
    print(f"bylo mi dnes potesenim")
