@@ -34,7 +34,7 @@ def strany_trojuhelniku():
      if a+b<=c or a+c<=b or c+b<=a:
          print(f"nelze sestrojit trojuhelnik s techle stran")
          continue
-    
+     print(f"Strany trojúhelníku: a={a:.2f}, b={b:.2f}, c={c:.2f}, tenhle trrojuhelnik sel sestrojit")
      return a,b,c
 def uhly_trojuhelniku(a,b,c):
     alfa = math.degrees(math.acos((b**2 + c **2 - a**2)/ (2*b*c)))
@@ -55,18 +55,26 @@ def kruh_vepsana_a_opsana(a,b,c,obsah):
     print(f"polomer kruznice opsane  je: {ops:.2f}")
     print(f"polomer kruznice vepsane  je: {vesp:.2f}")
     return vesp, ops
-    
+
+def typ_troj(a,b,c):
+   if a==b==c:
+      print(f"trojuhelnik je rvnostrany")
+   elif a==b or a==c or b==c:
+      print(f"trojuhelnik je rovnorameny")
+   else:
+      print(f"trojuhelnik je ruzno strany")
 
 
 trojuhelnik = strany_trojuhelniku() 
 a , b, c = trojuhelnik
 uhly = uhly_trojuhelniku(a, b, c)
 obvod,obsah =obvod_a_obsah(a, b, c)
-print(f"Strany trojúhelníku: a={a:.2f}, b={b:.2f}, c={c:.2f}")
 print(f"Úhly trojúhelníku (stupně): alfa={uhly[0]:.2f}, bravo={uhly[1]:.2f}, charlie={uhly[2]:.2f}")
 print(f"Obvod: {obvod:.2f}, Obsah: {obsah:.2f}")
-
+d,e,f = uhly
 kruh_vepsana_a_opsana(a,b,c,obsah)
+typ_troj(d,e,f)
+
 
 
 
@@ -83,3 +91,20 @@ def vykres(a,b,c):
    plt.title("trojka")
    plt.show()
 vykres(a,b,c)
+
+
+
+
+
+
+
+def lobyy():
+   print(f"co se chces dneska dozvedet\n pokud chces znat zda jde trojuhelnik sestavit a jeho typ zadej 1\npokud chces vykresleni trojuhelniku zadej 2")
+   print(f"pokud zase obsah a obvod 3 a pro kruznici opsanou a vepsanou 4")
+   od=input(f"tak co?")
+   if od==1 :
+      strany_trojuhelniku
+
+
+lobyy()
+
