@@ -143,19 +143,5 @@ def lobyy():
 
 
 
-
-
-
-lobyy()
-   
-         
-
-      
-
-
-   if od==1 :
-      strany_trojuhelniku
-
-
 lobyy()
 
