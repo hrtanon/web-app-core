@@ -3,7 +3,7 @@ from datetime import datetime
 import random
 
 daytimes = datetime.now().hour
-
+os.system("cls")
 
 os.system("cls")
 jmeno=input(f"jake je vase jmeno?")
@@ -25,6 +25,6 @@ else :
 pozdrav=["ahoj" , "hi", "dobry dopo"]
 random.seed() 
 print(random.choice(pozdrav))
-os.system("cls")
+
 
    

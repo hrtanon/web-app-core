@@ -54,5 +54,5 @@ else:
 
 with open("tabulka.csv","w",newline="",encoding="utf-8")as csvfile:
       writer = csv.writer(csvfile)
-      writer.writerow(vysledky)
+      writer.writerows(vysledky)
     
