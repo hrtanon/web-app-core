@@ -86,7 +86,7 @@ def mocnina():
     
     
         
-mocnina()
+
 
 
 
@@ -95,7 +95,10 @@ mocnina()
 # Zadejte proměnnou 'my_savings' a přiřaďte jí hodnotu od uživatele (např. 200)
 # Poté vypočítejte, kolik budete mít peněz po přidání 10% úroků, které si uložíte do proměnné 'my_interest'.
 
-
+def zidovstvi():
+    my_savings=float(input(f"zadej tve uspory"))
+    my_interest=my_savings+(my_savings*0.1)
+    return my_interest
 
 ##############################################################
 # 4. Úkol: Operace s řetězci
@@ -105,7 +108,18 @@ mocnina()
     # c) spojí oba řetězce do jednoho a vypíše výsledek
 
 # a) Načtení řetězců
-
+def retez():
+    ret=input(f"zadej neco")
+    a=len(ret)
+    ez=input(f"zadej neco dalsiho stejne delky")
+    b=len(ez)
+    if a==b:
+        print(f"reteze byli stejen  dobra pracve")
+    elif a <b:
+        print(f"hohohho prvni byl kratsi")
+    else:
+        print(f"druhy byl trochu kratsi chlape")
+    print(f"obe zprravy dohgromady{ret+ez}")
 
 # b) Zkontrolujte délku řetězců
 
@@ -136,7 +150,13 @@ mocnina()
     # c) vypíše všechny klíče a hodnoty slovníku v cyklu
 
 # a) Vytvoření slovníku
-
+jmeno=input("jmeno?")
+vek=input("vek?")
+mesto=input("mesto?")
+my_dict={'key1':jmeno,'key2':vek,'key3':mesto}
+print(my_dict['key1'])
+print(my_dict['key2'])
+print(my_dict['key3'])
 
 # b) Načtení údajů od uživatele
 
@@ -190,10 +210,20 @@ mocnina()
 
 # a) Vytvoření seznamu a přidání nového prvku
 
-
+def seznamnajdutamconeznam():
+    my_list=[]
+    for i in range(3):
+        prvek=input(f"tri prvky" )
+        my_list.append(prvek)
+    print(my_list) 
+    a=input(f"zadej 0 nebo 1 nebo 2")
+    my_list.pop(0)
+    print(my_list) 
+    my_list.sort()
+    print(my_list) 
 # b) Odstranění prvku na zvoleném indexu
 
-
+seznamnajdutamconeznam()
 # c) Seřazení seznamu
 
 
@@ -207,6 +237,11 @@ mocnina()
 
 # a) Vytvoření tuple
 
+def tuple():
+    a,b,c=ale=input("neco 3 cisla bez mezer")
+    print(f"prvni prvek{a}")
+    print(f"posledni prvek{c}")
+    
 
 # b) První prvek
 
