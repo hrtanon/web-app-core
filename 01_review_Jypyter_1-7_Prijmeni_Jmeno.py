@@ -66,6 +66,27 @@ cisla()
 
 
 # b) Druhá odmocnina
+def mocnina():
+    while True:
+        try:
+            a=float(input(f"prvni cislo"))
+            b=float(input(f"druhe?"))
+            
+        except ValueError:
+            print(f"zadej platne cislo")
+            continue
+        if b<=0 or a<=0:
+            print(f"nelze delat odmocninu")
+            continue
+        else :
+            print(f"treti odmocnina s a {a**(1/3)}")
+            print(f"druha odmocnina s b{b**0.5}")
+            break
+    return
+    
+    
+        
+mocnina()
 
 
 
