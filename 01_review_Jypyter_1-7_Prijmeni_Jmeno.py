@@ -127,7 +127,7 @@ def retez():
 # c) Spojení řetězců
 
 
-
+has 
 ##############################################################
 # 5. Úkol: Práce s cykly
 # Napište kód, který:
@@ -149,14 +149,16 @@ def retez():
     # b) přidá do slovníku tři položky, které načte od uživatele (např. name, age, city)
     # c) vypíše všechny klíče a hodnoty slovníku v cyklu
 
-# a) Vytvoření slovníku
-jmeno=input("jmeno?")
-vek=input("vek?")
-mesto=input("mesto?")
-my_dict={'key1':jmeno,'key2':vek,'key3':mesto}
-print(my_dict['key1'])
-print(my_dict['key2'])
-print(my_dict['key3'])
+# a) Vytvoření slovníku:
+def slovnik():
+    jmeno=input("jmeno?")
+    vek=input("vek?")
+    mesto=input("mesto?")
+    my_dict={'key1':jmeno,'key2':vek,'key3':mesto}
+    print(my_dict['key1'])
+    print(my_dict['key2'])
+    print(my_dict['key3'])
+
 
 # b) Načtení údajů od uživatele
 
