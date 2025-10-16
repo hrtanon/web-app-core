@@ -127,6 +127,7 @@ def lobyy():
     except ValueError:
         print("Chyba! Zadej prosím číslo.")
         continue
+    
     if od==1:
        strany_trojuhelniku(a,b,c)
        typ_troj(a,b,c)
