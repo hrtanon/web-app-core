@@ -36,6 +36,8 @@ def strany_trojuhelniku():
          continue
      print(f"Strany trojúhelníku: a={a:.2f}, b={b:.2f}, c={c:.2f}, tenhle trrojuhelnik sel sestrojit")
      return a,b,c
+
+
 def uhly_trojuhelniku(a,b,c):
     """pocita uhly trojuhelniku pomoci cosinovy vety
     promene a,b,c z prvni funkce"""
