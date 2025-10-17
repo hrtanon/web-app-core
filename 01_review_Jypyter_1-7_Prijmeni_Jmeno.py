@@ -127,7 +127,7 @@ def retez():
 # c) Spojení řetězců
 
 
-has 
+
 ##############################################################
 # 5. Úkol: Práce s cykly
 # Napište kód, který:
