@@ -40,7 +40,7 @@ def cisla():
     print(f"soucet{a+b}")
     return a,b
         
-cisla()
+
     
 
 
@@ -136,7 +136,13 @@ def retez():
     # c) na každém pátém čísle vypíše text "Pátý krok!"
 
 # Načtení čísla
-
+def prace_sckylky():
+    while True:
+        try :
+            x=float(input(f"zadej kladne cislo"))
+        except ValueError:
+            print(f" zadej platne cislo")
+            continue
 
 # b) Výpis čísel
 
@@ -225,7 +231,7 @@ def seznamnajdutamconeznam():
     print(my_list) 
 # b) Odstranění prvku na zvoleném indexu
 
-seznamnajdutamconeznam()
+
 # c) Seřazení seznamu
 
 
