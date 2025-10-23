@@ -4,7 +4,7 @@ V této lekci se naučíš, jaké rozšíření (pluginy) potřebuješ ve VS Cod
 
 ---
 
-## 1. Ruff – 
+## 1. Ruff 
 – rychlý linter a kontrola stylu
 **Funkce:**  
 Ruff je extrémně rychlý nástroj, který kontroluje kód z hlediska **chyb, stylu a potenciálních problémů**.  
