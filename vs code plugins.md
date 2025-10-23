@@ -173,6 +173,7 @@ import math
 # Použití: Před odevzdáním nebo sdílením projektu.
 # Výhoda: Lepší přehlednost a čitelnost kódu.
 ```
+nedoporudsuji za me zbytecne a tezke na psusteni obcas.
 ## 8. Error Lens
 Zvýrazňuje chyby a varování přímo v řádcích kódu.
 
@@ -209,6 +210,7 @@ for i in range(3):
 # Použití: Vnořené podmínky a cykly.
 # Výhoda: Vyhneš se chybě IndentationError.
 ```
+funguje kod je prehlednejsi
 ## 10. Markdown All in One
 Umožňuje psát poznámky v Markdownu s náhledem přímo ve VS Code.
 Například tuto lekci právě čteš díky němu.

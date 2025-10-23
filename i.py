@@ -1,4 +1,2 @@
-import math
-import sys
-import os
-from os import path
+x = "abc"
+y = x + 5
