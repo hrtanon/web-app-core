@@ -34,6 +34,7 @@ muj_soubor.py:3:3: E111 indentation is not a multiple of four
 muj_soubor.py:4:18: F821 undefined name 'Jmeno'
 muj_soubor.py:1:10: F401 'sys' imported but unused
 ```
+tenhle program funguje vyborne je jednoduchy funfuje porad bez zpousteni. A zahrnuje i veci ktere delaji dalsi rozsireni.
 ## 2. Pylance
 
 Dává ti chytré doplňování kódu, typové kontroly a varování dřív, než vůbec kód spustíš.
@@ -56,6 +57,7 @@ vysledek = pozdrav(123)  # ⚠️ Pylance varuje: očekává 'str', dostal 'int'
 ## Použití: Při psaní funkcí, které vrací určité typy.
 ## Výhoda: Odhalíš chyby dřív, než ti program spadne.
 ```
+hodne podobne ruff jenom o neco mensi balicek
 ## 3. Jupyter
 
 Umožňuje vytvářet .ipynb soubory – poznámky, kde se míchá kód, text a výsledky.
@@ -95,6 +97,7 @@ for i in range(3):
 # Použití: Ověření krátkých úseků programu.
 # Výhoda: Ušetří čas a nezdržuje tě otevíráním konzole.
 ```
+kod jede jakoby porad me nevyhovoval dle zkusenosti mi zablokoval python a vse jelo v nem. 
 ## 5. autoDocstring
 Automaticky generuje dokumentaci (docstringy) pro funkce a třídy.
 
@@ -124,6 +127,7 @@ def secti(a: int, b: int) -> int:
 # Použití: Větší projekty, kde se hodí mít dokumentaci.
 # Výhoda: Kód je přehlednější a srozumitelný i po delší době.
 ```
+vyborna vec aspon usetri trochu casu jednoduche na pouziti prave tlacitko na telo funce a volba vygenerovat docstring.
 ## 6. Black Formatter
 Automaticky formátuje kód podle pravidel PEP8.
 Konec hádek o počet mezer.
@@ -145,6 +149,7 @@ def spatne(x, y):
 # Použití: Před uložením nebo commitnutím změn.
 # Výhoda: Kód vypadá čistě a profesionálně.
 ```
+funguje vyborne dle recenzi prave s ruff.
 ## 7. isort
 Automaticky třídí a čistí importy.
 
