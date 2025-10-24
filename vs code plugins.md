@@ -34,7 +34,7 @@ muj_soubor.py:3:3: E111 indentation is not a multiple of four
 muj_soubor.py:4:18: F821 undefined name 'Jmeno'
 muj_soubor.py:1:10: F401 'sys' imported but unused
 ```
-tenhle program funguje vyborne je jednoduchy funfuje porad bez zpousteni. A zahrnuje i veci ktere delaji dalsi rozsireni.
+tenhle program funguje vyborne je jednoduchy funfuje porad bez zpousteni. A zahrnuje i veci ktere delaji dalsi rozsireni. sam umi opravovat chyby kdyz dame format document.
 ## 2. Pylance
 
 Dává ti chytré doplňování kódu, typové kontroly a varování dřív, než vůbec kód spustíš.
@@ -57,7 +57,7 @@ vysledek = pozdrav(123)  # ⚠️ Pylance varuje: očekává 'str', dostal 'int'
 ## Použití: Při psaní funkcí, které vrací určité typy.
 ## Výhoda: Odhalíš chyby dřív, než ti program spadne.
 ```
-hodne podobne ruff jenom o neco mensi balicek
+hodne podobne ruff jenom o neco mensi balicek ale jen navrhuje zmeny ruff je umi i provest.
 ## 3. Jupyter
 
 Umožňuje vytvářet .ipynb soubory – poznámky, kde se míchá kód, text a výsledky.
@@ -97,7 +97,7 @@ for i in range(3):
 # Použití: Ověření krátkých úseků programu.
 # Výhoda: Ušetří čas a nezdržuje tě otevíráním konzole.
 ```
-kod jede jakoby porad me nevyhovoval dle zkusenosti mi zablokoval python a vse jelo v nem. 
+nevidim v nem zas takovy uzitek.
 ## 5. autoDocstring
 Automaticky generuje dokumentaci (docstringy) pro funkce a třídy.
 
@@ -149,7 +149,7 @@ def spatne(x, y):
 # Použití: Před uložením nebo commitnutím změn.
 # Výhoda: Kód vypadá čistě a profesionálně.
 ```
-funguje vyborne dle recenzi prave s ruff.
+bobma s ruff ktery opravy tenle jeste seradi a zprehledni kod spusteni pravym tlacitlem a pak dat format document.
 ## 7. isort
 Automaticky třídí a čistí importy.
 
@@ -173,7 +173,8 @@ import math
 # Použití: Před odevzdáním nebo sdílením projektu.
 # Výhoda: Lepší přehlednost a čitelnost kódu.
 ```
-nedoporudsuji za me zbytecne a tezke na psusteni obcas.
+ano funguje seradi ,ale nemyslim ze je to zas takova bomba.
+
 ## 8. Error Lens
 Zvýrazňuje chyby a varování přímo v řádcích kódu.
 
@@ -190,6 +191,7 @@ vysledek = cislo + 5  # ⚠️ Typová chyba označena přímo v kódu
 # Použití: Při psaní delších skriptů.
 # Výhoda: Ušetří ti debugování a nervy.
 ```
+uplna bobma doporudsuji.
 ## 9. Indent Rainbow
 Barevně odlišuje úrovně odsazení.
 V Pythonu klíčová věc – mezera navíc = pád programu.
@@ -210,6 +212,7 @@ for i in range(3):
 # Použití: Vnořené podmínky a cykly.
 # Výhoda: Vyhneš se chybě IndentationError.
 ```
+
 funguje kod je prehlednejsi
 ## 10. Markdown All in One
 Umožňuje psát poznámky v Markdownu s náhledem přímo ve VS Code.
@@ -254,7 +257,33 @@ Když máš **Markdown All in One**, tak:
 
 
 ```
+## 11. IntelliCode
 
+1. Typ rozšíření:
+Pomocník pro inteligentní doplňování kódu (AI asistence).
+
+2. Co dělá:
+Analyzuje, co píšeš, a podle kontextu nabízí nejpravděpodobnější a nejvhodnější možnosti doplnění kódu.
+
+3. K čemu je to dobré:
+
+         zrychluje psaní,
+
+         napovídá nejčastěji používané konstrukce,
+
+         pomáhá učit se idiomatický (správný) styl psaní,
+
+        umí spolupracovat s GitHub Copilotem (vylepší jeho návrhy).
+
+4. Příklad:
+Napíšeš for i in → nabídne range() jako první.
+Napíšeš import numpy as → doplní np.
+
+5. Pro koho:
+Vhodné i pro začátečníky, protože tě učí psát jako zkušenější vývojáři.
+
+6. Shrnutí jednou větou:
+👉 IntelliCode je chytré doplňování, které ti napoví kód podle toho, jak by ho napsal zkušený programátor.
 ---
 
 
