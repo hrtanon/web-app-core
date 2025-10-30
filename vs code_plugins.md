@@ -1,12 +1,35 @@
 
 # 🐍 VS Code – Doporučené pluginy pro Python začátečníky
+Vytvořil Hrtáň Ondřej.
 
 V této lekci se naučíš, jaká rozšíření (pluginy) potřebuješ ve VS Code, aby se ti v Pythonu pracovalo pohodlně, přehledně a efektivně.
 
+
+
+## 🔧 Jak nainstalovat rozšíření
+
+Aby šla rozšíření (pluginy) vůbec používat, musíš je nejdřív **nainstalovat z Marketplace** přímo ve VS Code.
+
+1. Otevři **VS Code**  
+2. Klikni na ikonu **čtverečku vlevo** – „Extensions“  
+3. Do vyhledávacího pole napiš název rozšíření (např. *Ruff*)  
+4. Klikni na **Install**
+
+![Instalace rozšíření ve VS Code](pictures/extensions.png)
+
+> 💡 Rozšíření se po instalaci aktivují automaticky.  
+> Pokud ne, restartuj VS Code.
+
 ---
+
+## 🧩 Co jsou pluginy
+Rozšíření (neboli pluginy) rozšiřují funkce editoru. Pomáhají ti psát kód rychleji, s méně chybami a přehledněji.  
+V následujících kapitolách najdeš ty nejdůležitější pro začátečníky v Pythonu.
 
 ## 1. Ruff
 **Rychlý linter a kontrola stylu**
+
+ [Ruff – VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
 
 ### 🧩 Funkce
 Ruff je extrémně rychlý nástroj, který kontroluje kód z hlediska **chyb, stylu a potenciálních problémů**.  
@@ -26,7 +49,7 @@ def pozdrav(jmeno):
     print("Ahoj " + Jmeno)
 
 pozdrav("Filip")
-````
+```
 
 **Výstup:**
 

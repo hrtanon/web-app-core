@@ -81,8 +81,7 @@ def pocitani(x,y,volba):
                     list1.append(1)
                     break  
 
-    return
-               
+    return              
             
             
 
