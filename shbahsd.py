@@ -3,7 +3,7 @@ import random
 def pohyb_opilce(pozice, pole):
     krok = random.choice(["+", "-"])
     
-    # vymaž starou pozici
+    
     pole[pozice] = "."
     
     if krok == "+" and pozice < len(pole) - 1:
@@ -11,16 +11,25 @@ def pohyb_opilce(pozice, pole):
     elif krok == "-" and pozice > 0:
         pozice -= 1
     
-    # označ novou pozici
+        
+    
     pole[pozice] = "*"
     print("".join(pole))
     
+    
+    
     return pozice
 
-# inicializace
-pole = ["."] * 10
+
+pole =["."] * 11  
 a = 5
 pole[a] = "*"
 
-for _ in range(10):
+for _ in range(100):
     a = pohyb_opilce(a, pole)
+    if a == 10 or 0:
+        print("dosel nekam")
+        print(_,"kroku")
+        break
+    
+    

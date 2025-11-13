@@ -23,7 +23,7 @@ def horse_race(horse_count, steps_to_win):
                 finished = True
                 break
 
-        time.sleep(0.1)
+        time.sleep(000.1)
 
 if __name__ == "__main__":
     seed()

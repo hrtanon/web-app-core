@@ -6,16 +6,6 @@ def horse_race(track_length, horses, max_steps, output=0):
 
     Každý kůň začíná na pozici 0 a v každém kroku se posune o 1–3 políčka vpřed náhodně.
     Kůň, který jako první dosáhne nebo překročí délku trati, vyhrává.
-    Pokud po vyčerpání kroků nikdo nedoběhne, závod končí bez vítěze.
-
-    Args:
-        track_length (int): délka závodní dráhy (v polích)
-        horses (int): počet koní
-        max_steps (int): maximální počet kroků simulace
-        output (int): 1 = vypisuje průběh, 0 = ticho
-
-    Returns:
-        str: jméno vítěze ("Horse_X") nebo "no_winner"
     """
     positions = [0] * horses
 
@@ -73,4 +63,4 @@ def horse_race_analysis(track_length, horses, max_steps, count):
 
 if __name__ == "__main__":
     seed(42)
-    horse_race_analysis(track_length=50, horses=5, max_steps=30, count=100)
+    horse_race_analysis(track_length=50, horses=10, max_steps=30, count=100)
