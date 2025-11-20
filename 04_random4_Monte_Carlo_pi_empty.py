@@ -27,3 +27,40 @@ Zadání programové struktury
   - Vytiskne odhadnutou hodnotu π.
 """
 import random
+import os
+os.system("cls")
+my_list=[]
+my_list1=[]
+
+
+def randomnumber():
+    
+    y=random.uniform[-1,1]
+    x=random.uniform[-1,1]
+    z=(x**2+y**2)**0.5
+    if z<1:
+        my_list.append(1)
+    elif z>1:
+        my_list1.append(1)
+
+
+
+def celek():
+  for i in range(100):
+      randomnumber()
+      
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
