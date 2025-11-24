@@ -35,29 +35,61 @@ my_list1=[]
 
 def randomnumber():
     
-    y=random.uniform[-1,1]
-    x=random.uniform[-1,1]
+    
+    y=random.uniform(-1,1)
+    x=random.uniform(-1,1)
     z=(x**2+y**2)**0.5
-    if z<1:
+    if z<=1:     
         my_list.append(1)
-    elif z>1:
+    elif z>0:
         my_list1.append(1)
 
 
 
 def celek():
-  for i in range(100):
-      randomnumber()
+  """_summary_
+  ma udelaz overeni vstupu
+  a pocet bodu v kruhu
+
+  Returns:
+      _type_: _description_
+  """  
+  while True:
+      try :
+        n=int(input(f"zadejte pocet pokusu"))
+          
+      except ValueError:
+          continue
       
-  
+      for i in range(n):
+        randomnumber()
+      x=len(my_list)
+      
+      print(f"cislo je {x}")
+      print(f"cislo1 je {n}")
+      return x,n
+
+
+def cislopi(x,n):
+    pi=(x/n)*4
+    print(f"cilso pi je priblizne{pi}")
+    return pi
 
 
 
 
+x,n=celek()
+pi=cislopi(x,n)
+
+pii=3,14159
+def overeni_pi(pi):
+    pii=3.14159
+    a=3.14159/pi
+    print(f"{a*100}%shoda")
+    return a
 
 
-
-
+overeni_pi(pi)
 
 
 
