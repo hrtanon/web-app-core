@@ -28,6 +28,7 @@ Zadání programové struktury
 """
 import random
 import os
+import matplotlib.pyplot as plt
 os.system("cls")
 my_list=[]
 my_list1=[]
@@ -36,13 +37,15 @@ my_list1=[]
 def randomnumber():
     
     
-    y=random.uniform(-1,1)
-    x=random.uniform(-1,1)
-    z=(x**2+y**2)**0.5
+    b=random.uniform(-1,1)
+    a=random.uniform(-1,1)
+    z=(a**2+b**2)**0.5
     if z<=1:     
         my_list.append(1)
     elif z>0:
         my_list1.append(1)
+    return a , b
+
 
 
 
@@ -85,7 +88,10 @@ pii=3,14159
 def overeni_pi(pi):
     pii=3.14159
     a=3.14159/pi
-    print(f"{a*100}%shoda")
+    if a>=1:
+      print(f"{100-(a*100-100)}%shoda")
+    else :
+      print(f"{a*100}%shoda")
     return a
 
 
@@ -93,6 +99,11 @@ overeni_pi(pi)
 
 
 
+def tvorba_obrazce():
+  a,b=randomnumber()
+  plt.plot([a,b])
+  plt.gca().set_aspect("equal", adjustable="box")
+  plt.title("pi")
+  plt.show()
 
-
-
+tvorba_obrazce()
