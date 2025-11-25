@@ -47,6 +47,19 @@ def randomnumber():
     return a , b
 
 
+def tvorba_obrazce():
+  a,b=randomnumber()
+  plt.scatter(a,b,"o")
+  plt.gca().set_aspect("equal", adjustable="box")
+  circle = plt.Circle((0, 0), 1, color='green', fill=False, linewidth=1.5, label='Jednotkový kruh')
+  plt.gca().add_patch(circle)
+
+  plt.axis('equal')
+  plt.title(f"Monte Carlo odhad π ")
+  plt.legend()
+  plt.show()
+
+
 
 
 def celek():
@@ -66,10 +79,12 @@ def celek():
       
       for i in range(n):
         randomnumber()
+        tvorba_obrazce()
       x=len(my_list)
       
       print(f"cislo je {x}")
       print(f"cislo1 je {n}")
+      plt.show()
       return x,n
 
 
@@ -87,6 +102,7 @@ pi=cislopi(x,n)
 pii=3,14159
 def overeni_pi(pi):
     pii=3.14159
+    
     a=3.14159/pi
     if a>=1:
       print(f"{100-(a*100-100)}%shoda")
@@ -96,14 +112,14 @@ def overeni_pi(pi):
 
 
 overeni_pi(pi)
-
-
-
-def tvorba_obrazce():
-  a,b=randomnumber()
-  plt.plot([a,b])
-  plt.gca().set_aspect("equal", adjustable="box")
-  plt.title("pi")
-  plt.show()
-
 tvorba_obrazce()
+
+
+
+
+
+  
+
+
+
+
