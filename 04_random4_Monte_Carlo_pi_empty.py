@@ -47,9 +47,9 @@ def randomnumber():
     return a , b
 
 
-def tvorba_obrazce():
-  a,b=randomnumber()
-  plt.scatter(a,b,"o")
+def tvorba_obrazce(a,b):
+  
+  plt.scatter(a,b,marker="o")
   plt.gca().set_aspect("equal", adjustable="box")
   circle = plt.Circle((0, 0), 1, color='green', fill=False, linewidth=1.5, label='Jednotkový kruh')
   plt.gca().add_patch(circle)
@@ -79,7 +79,7 @@ def celek():
       
       for i in range(n):
         randomnumber()
-        tvorba_obrazce()
+        
       x=len(my_list)
       
       print(f"cislo je {x}")
@@ -112,7 +112,7 @@ def overeni_pi(pi):
 
 
 overeni_pi(pi)
-tvorba_obrazce()
+
 
 
 
