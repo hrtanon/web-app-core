@@ -10,8 +10,13 @@ import time
 - Vytvoř podadresář "test_soubory" ve své domovské složce (použij `pathlib` i `os`).
 - Sestav absolutní cestu k souboru `"example.txt"` v této nové složce.
 """
-Path.home()
-
+home=Path.home()
+print(home)
+p=home/"test_soubory"/"TEXT_SOUBOR"/"ouvej"/"monalisa.txt"
+os.makedirs(p, exist_ok=True)
+akt=Path.cwd()
+marek=Path(p).absolute
+print(marek)
 
 
 # 2. Práce s jednotlivými částmi cesty
@@ -20,12 +25,22 @@ Path.home()
   - Kořen (anchor)
   - Nadřazenou složku (parent)
   - Název souboru (name)
-  - Příponu (suffix)
+  - Příponu (suffix).parent   # WindowsPath('C:/Users/Al')
+  p.name     # 'spam.txt'
+  p.stem     # 'spam'
+  p.suffix   # '.txt'
+  p.parts    # ('C:\\', 'Users', 'Al', 'spam.txt')
   - Seznam všech částí cesty (`parts`)
 - Spočítej, kolik rodičovských složek má aktuální pracovní adresář.
  """
 
-
+print(p.anchor)   # 'C:\\'
+print(p.parent )  # WindowsPath('C:/Users/Al')
+print(p.name)     # 'spam.txt'
+print(p.stem)     # 'spam'
+print(p.suffix)   # '.txt'
+print(p.parts)
+print(akt.parent)
 
 ### 3. Kontrola existence a typu cesty
 """ 
