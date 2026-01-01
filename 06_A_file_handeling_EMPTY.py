@@ -49,7 +49,8 @@ print(akt.parent)
 - Zjisti, zda existuje nějaký soubor `"example.txt"`, a zda je to soubor.
  """
 
-
+if TEXT_SOUBOR.exists() ==False:
+  
 
 ### 4. Vyhledávání souborů - glob
 """ 

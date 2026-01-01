@@ -7,21 +7,20 @@ os.system("cls")
 # ňesmim dat do parametnu urcuite veci kdyz pak chci aby byli dany az inputem
 
 def strany_trojuhelniku():
-    """
+   """
 
-    vyzada stranu kterou zadate pak je vraci jako a,b,c pokud lze trojuhelnik sestrojit 
-    return:
-    kvuli tomu podminka if  a trouhelnikova nerovnost
-    """
-    while True:
-     try:
+   vyzada stranu kterou zadate pak je vraci jako a,b,c pokud lze trojuhelnik sestrojit 
+   return:
+   kvuli tomu podminka if  a trouhelnikova nerovnost
+   """
+   while True:
+      try:
         a = float(input("Jaká je první strana? "))
         b = float(input("Jaká je druhá strana? "))
         c = float(input("Jaká je třetí strana? "))
-        if a==0  or b==0  or c==0 :
+      if a==0  or b==0  or c==0 :
             print(f"nula zatat preci nemuezs")
             continue
-        
       
      except ValueError:
         print("Chyba! Zadej prosím číslo.")
