@@ -49,8 +49,21 @@ print(akt.parent)
 - Zjisti, zda existuje nějaký soubor `"example.txt"`, a zda je to soubor.
  """
 
-if TEXT_SOUBOR.exists() ==False:
+if p.exists() :
+  print("sobor uz ecistuje")
+
+else:
+  os.makedirs(p.parent)
+  print("soubor byl vytvoren")
   
+
+
+d=home/"test_soubory"
+
+lisonos=list(d.glob("*"))
+print(f"{lisonos} aaaaa")
+
+
 
 ### 4. Vyhledávání souborů - glob
 """ 
@@ -59,6 +72,7 @@ if TEXT_SOUBOR.exists() ==False:
 - Najdi všechny textové soubory (`*.txt`) ve složce a vypiš jejich jména.
 """
 
+d=home/"test_soubory"
 
 
 ### 5. Zápis a čtení textových souborů
