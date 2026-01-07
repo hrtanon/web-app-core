@@ -1,8 +1,41 @@
-from pathlib import Path
+import random
 import os
+home=0
+hospoda=0
+os.system("cls")
+
+pozice=5
+def funkce():
+    global home
+    global hospoda
+    global pozice
+    
+    krok=random.choice(["+","-"])
+    if krok=="+":
+        pozice=pozice+1
+    else:
+        pozice=pozice-1
+    if pozice ==0 :
+        home=home+1
+        pozice=5
+    elif pozice==10:
+        hospoda=hospoda+1
+        pozice=5
+    
+    
 
 
-home=Path.home()
-print(home)
-p=home/"test_soubory"/"TEXT_SOUBORw"/"ouvejte.txt"/"rrraah"
-p.touch()
+
+
+def opakovani():
+    
+    for i in range(100):
+        pozice,home,hospoda=funkce()
+        
+    
+    print(f"doma byl {home}x")
+    print(f"v hospode byl {hospoda}x")
+    # doresit pozice problem ukladani 
+
+
+opakovani()
