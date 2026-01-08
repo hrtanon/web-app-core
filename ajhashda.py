@@ -22,20 +22,20 @@ def funkce():
         hospoda=hospoda+1
         pozice=5
     
-    
+    return pozice,home,hospoda
 
 
 
 
 def opakovani():
-    
+    global pozice
     for i in range(100):
         pozice,home,hospoda=funkce()
         
     
     print(f"doma byl {home}x")
     print(f"v hospode byl {hospoda}x")
-    # doresit pozice problem ukladani 
+    
 
 
 opakovani()
