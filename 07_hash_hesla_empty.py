@@ -26,7 +26,7 @@ import re
 
 # Hashování je jednosměrný proces - z hashe nemůžeme získat původní heslo zpět
 # Použijeme algoritmus SHA-256 z knihovny hashlib
-heslovina="adsjhah"
+
 def hash_password(heslovina):
     """Vytvoří SHA-256 hash zadaného hesla.
     
@@ -83,7 +83,7 @@ def user_exists(email):
     """
     # TODO: Použijte try-except pro ošetření FileNotFoundError
     try :
-        with open("emaly.txt", "r ", encoding="utf-8") as file:
+        with open("emaly.txt", "r", encoding="utf-8") as file:
             for line in file:
                 ulozene_maly,_ =line.strip().split(",")
                 if email== ulozene_maly:
@@ -128,7 +128,7 @@ def register_user(email, password):
     """
     if user_exists(email)==False:
         with open("emaly.txt", "a", encoding="utf-8")as file:
-            file.write(f"{email},{hash_password(password)}/n")
+            file.write(f"{email},{hash_password(password)}\n")
             print(f"registrace probehla more")
         return True
     
@@ -172,7 +172,7 @@ def login_user(email, password):
                 line=line.strip()
                 if not line:
                     continue
-                email_ulozeny, uloz_hash= line.stip(",")
+                email_ulozeny, uloz_hash= line.strip(",")
                 if email==email_ulozeny:
                     if hash==uloz_hash:
                         print("uspesne prihlaseni")
@@ -289,8 +289,41 @@ def register_user_advanced(email, password, password_confirm):
 def ziskani_hodnot():
     while True:
         try:
+            moznost=int(input("zadej co chces"))
+            if 0>=moznost or moznost>=4:
+                print ("neplatny vstup")
+                continue
+            else :
+                return moznost
+        except ValueError:
+            print("neplatny vstup")
+            continue
+def ziskat_emal():
+    while True:
+        try:
+            email=input("zadej maila").strip()
+            if "@" not in email:
+                print("to neni mail ani za nic")
+                continue
+            else:
+                return email
             
-            # udelat menu overeni vstupu
+        except ValueError:
+            print ("to neni mail zkus znova")
+            continue
+    
+def zisk_heslo():
+    while True:
+        password=input("zadej si heslo \n aspon 8 znaku").strip()
+        if not password:
+            print("neco zadej more")
+            continue
+        delka=len(password)
+        if delka<8:
+            print("dej delsi heslo")
+            continue
+        else:
+            return password
 def main():
     """Hlavní program s interaktivním textovým menu.
     
@@ -304,9 +337,22 @@ def main():
     print("=" * 50)
     print()
     for i in range(5):
-        moznost=input("zadej co chces")
-        email=input("zadej email \n")
-        passwort=input("zadej heslo")
+        cislo=ziskani_hodnot()
+        if cislo==1:
+            email=ziskat_emal()
+            password=zisk_heslo()
+            register_user(email,password)
+            print("registace probehla")
+            break
+        elif cislo==2:
+            email=ziskat_emal()
+            password=zisk_heslo()
+            login_user(email,password)
+            print("byli jse prihlaseni")
+            break
+        elif cislo==3:
+            print("treba nekdy priste")
+            break
     # TODO: Vytvořte nekonečnou smyčku while True
     # TODO: Vypište menu s možnostmi 1-3
     # TODO: Získejte volbu uživatele pomocí input().strip()
@@ -328,6 +374,7 @@ def main():
     # TODO: Pro neplatnou volbu vypište chybovou hlášku
     
     pass
+main()
 
 
 ##############################################################
@@ -403,11 +450,9 @@ if __name__ == "__main__":
     print()
     print("TESTOVACÍ SEKCE:")
     print("-" * 50)
-    hash_password(heslovina)
-    hash_password("sahdjasd")
-    hash_password(heslovina)
+    main()
     
     # Příklad testování hash funkce:
     # test_password = "testHeslo123"
-    # print(f"Heslo: {test_password}")
-    # print(f"Hash: {hash_password(test_password)}")
+   
+main()
