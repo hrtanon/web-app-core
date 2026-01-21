@@ -130,7 +130,7 @@ def register_user(email, password):
         with open("emaly.txt", "a", encoding="utf-8")as file:
             file.write(f"{email},{hash_password(password)}/n")
             print(f"registrace probehla more")
-    elif 
+        return True
     
     
     return False
@@ -165,6 +165,35 @@ def login_user(email, password):
         True pokud přihlášení bylo úspěšné (správný e-mail i heslo),
         False pokud přihlášení selhalo nebo uživatel neexistuje
     """
+    hash=hash_password(password)
+    try:
+        with open("emaly.txt", "r",encoding="utf-8") as file:
+            for line in file:
+                line=line.strip()
+                if not line:
+                    continue
+                email_ulozeny, uloz_hash= line.stip(",")
+                if email==email_ulozeny:
+                    if hash==uloz_hash:
+                        print("uspesne prihlaseni")
+                        break
+                    elif hash==None:
+                        print("heslo jeste nemate")
+                        break
+                    else:
+                        print("heslo se neshoduje ")
+                else:
+                    print("nebyl jste prihlasen")
+                    with open("emaly.txt", "a", encoding="utf-8")as file:
+                        file.write(f"{email},{hash_password(password)}/n")
+                        print(f"registrace probehla more")
+                        break
+    except FileNotFoundError:
+        print("jeste neexistuje vas ucet nebo slozka kde by mel byt prihlasim vas")
+        with open("emaly.txt", "a", encoding="utf-8")as file:
+                        file.write(f"{email},{hash_password(password)}/n")
+                        print(f"registrace probehla more")
+        return
     # TODO: Zhashujte zadané heslo pomocí hash_password()
     # TODO: Použijte try-except pro ošetření FileNotFoundError
     # TODO: Otevřete soubor "users.txt" v režimu čtení s utf-8
@@ -257,7 +286,11 @@ def register_user_advanced(email, password, password_confirm):
 ##############################################################
 ### ČÁST 6: Hlavní program s menu
 ##############################################################
-
+def ziskani_hodnot():
+    while True:
+        try:
+            
+            # udelat menu overeni vstupu
 def main():
     """Hlavní program s interaktivním textovým menu.
     
@@ -270,7 +303,10 @@ def main():
     print("   SYSTÉM SPRÁVY UŽIVATELSKÝCH ÚČTŮ")
     print("=" * 50)
     print()
-    
+    for i in range(5):
+        moznost=input("zadej co chces")
+        email=input("zadej email \n")
+        passwort=input("zadej heslo")
     # TODO: Vytvořte nekonečnou smyčku while True
     # TODO: Vypište menu s možnostmi 1-3
     # TODO: Získejte volbu uživatele pomocí input().strip()
