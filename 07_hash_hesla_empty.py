@@ -47,7 +47,7 @@ def hash_password(heslovina):
     heslovina_bytes= heslovina.encode("utf-8")
     hash_code=hashlib.sha256(heslovina_bytes)
     hex_heslovina= hash_code.hexdigest()
-    print(hex_heslovina)
+    
     # TODO: Vytvořte hash pomocí hashlib.sha256()
     # TODO: Vraťte hexadecimální reprezentaci pomocí .hexdigest()
     return hex_heslovina
@@ -172,7 +172,7 @@ def login_user(email, password):
                 line=line.strip()
                 if not line:
                     continue
-                email_ulozeny, uloz_hash= line.strip(",")
+                email_ulozeny, uloz_hash= line.split(",")
                 if email==email_ulozeny:
                     if hash==uloz_hash:
                         print("uspesne prihlaseni")
@@ -184,15 +184,15 @@ def login_user(email, password):
                         print("heslo se neshoduje ")
                 else:
                     print("nebyl jste prihlasen")
-                    with open("emaly.txt", "a", encoding="utf-8")as file:
-                        file.write(f"{email},{hash_password(password)}/n")
+                    with open("emaly.txt", "a", encoding="utf-8") as file:
+                        file.write(f"{email},{hash_password(password)}\n")
                         print(f"registrace probehla more")
                         break
     except FileNotFoundError:
         print("jeste neexistuje vas ucet nebo slozka kde by mel byt prihlasim vas")
         with open("emaly.txt", "a", encoding="utf-8")as file:
-                        file.write(f"{email},{hash_password(password)}/n")
-                        print(f"registrace probehla more")
+            file.write(f"{email},{hash_password(password)}\n")
+            print(f"registrace probehla more")
         return
     # TODO: Zhashujte zadané heslo pomocí hash_password()
     # TODO: Použijte try-except pro ošetření FileNotFoundError
@@ -206,7 +206,7 @@ def login_user(email, password):
     #       - Pokud ne, vypište "Nesprávné heslo" a vraťte False
     # TODO: Pokud e-mail nebyl nalezen, vypište hlášku a vraťte False
     # TODO: V except bloku vypište hlášku o neexistujícím souboru a vraťte False
-    pass
+
 
 
 ##############################################################
@@ -298,6 +298,8 @@ def ziskani_hodnot():
         except ValueError:
             print("neplatny vstup")
             continue
+
+
 def ziskat_emal():
     while True:
         try:
@@ -311,7 +313,9 @@ def ziskat_emal():
         except ValueError:
             print ("to neni mail zkus znova")
             continue
-    
+
+
+
 def zisk_heslo():
     while True:
         password=input("zadej si heslo \n aspon 8 znaku").strip()
@@ -324,6 +328,9 @@ def zisk_heslo():
             continue
         else:
             return password
+
+
+
 def main():
     """Hlavní program s interaktivním textovým menu.
     
@@ -347,7 +354,7 @@ def main():
         elif cislo==2:
             email=ziskat_emal()
             password=zisk_heslo()
-            login_user(email,password)
+            login_user(email, password)
             print("byli jse prihlaseni")
             break
         elif cislo==3:
@@ -374,7 +381,7 @@ def main():
     # TODO: Pro neplatnou volbu vypište chybovou hlášku
     
     pass
-main()
+
 
 
 ##############################################################
@@ -452,7 +459,7 @@ if __name__ == "__main__":
     print("-" * 50)
     main()
     
+    
     # Příklad testování hash funkce:
     # test_password = "testHeslo123"
    
-main()
