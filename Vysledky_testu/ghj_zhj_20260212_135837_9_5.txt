@@ -1,0 +1,10 @@
+Vypracoval/a: zhj ghj
+Otázek v testu: 9
+Výsledná známka: 5
+Procentní úspěšnost: 0.0 %
+Stupnice: <100-90>,(90-75>,(75-60>,(60-45>,(45-0>
+Datum a čas vyhodnocení: 12.2.2026, 13:58:37
+
+----------------------
+Chybně zodpovězeno:
+

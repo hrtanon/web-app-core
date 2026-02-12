@@ -2,14 +2,10 @@ import os
 import random
 from datetime import datetime
 
-# Globální proměnné pro sledování výsledků
 spravne_odpovedi = 0
 spatne_odpovedi = 0
 spatne_otazky = []
 
-# -------------------------------------------------------
-# Funkce pro načtení a validaci souborů s otázkami
-# -------------------------------------------------------
 
 def validace_souboru(cesta_souboru):
     """
@@ -35,7 +31,7 @@ def validace_souboru(cesta_souboru):
     try:
         with open(cesta_souboru, "r", encoding="utf-8") as f:
             radky = f.read().splitlines()
-            if len(radky) < 7:  # minimální počet řádků = autor + prázdné + 1 otázka + 4 odpovědi + 2 prázdné
+            if len(radky) < 7:  
                 print(f"{cesta_souboru} má málo řádků")
                 return False
             
@@ -51,7 +47,7 @@ def validace_souboru(cesta_souboru):
                 if not radky[i].startswith("Otázka:"):
                     print(f"{cesta_souboru} - řádek {i+1} není otázka")
                     return False
-                # zkontrolovat 4 odpovědi
+                
                 for j in range(1, 5):
                     if i + j >= len(radky):
                         print(f"{cesta_souboru} - chybí odpovědi u otázky {radky[i]}")
@@ -60,7 +56,7 @@ def validace_souboru(cesta_souboru):
                     if len(casti) != 2 or casti[0].strip() not in ["0", "1"]:
                         print(f"{cesta_souboru} - špatný formát odpovědi {radky[i+j]}")
                         return False
-                i += 6  # otázka + 4 odpovědi + prázdný řádek
+                i += 6  
         return True
     except FileNotFoundError:
         print(f"{cesta_souboru} neexistuje")
@@ -100,9 +96,11 @@ def nacti_vsechny_otazky():
         return []
     return bloky
 
-# -------------------------------------------------------
-# Funkce pro průběh testu
-# -------------------------------------------------------
+
+
+
+
+
 
 def nacteni_otazek(pocet_otazek):
     """
@@ -143,6 +141,8 @@ def nacteni_otazek(pocet_otazek):
 
     return vysledky
 
+
+
 def overeni_odpovedi_spravne(odpovedi):
     """
     Určí správnou odpověď z bloku odpovědí.
@@ -158,6 +158,8 @@ def overeni_odpovedi_spravne(odpovedi):
         if casti[0] == "1":
             return casti[1].strip()
     return None
+
+
 
 def shoda_odpovedi(vstup, spravna_odpoved, blok):
     """
@@ -177,6 +179,9 @@ def shoda_odpovedi(vstup, spravna_odpoved, blok):
     else:
         spatne_odpovedi += 1
         spatne_otazky.append(blok)
+
+
+
 
 def uspesnost(pocet_otazek):
     """
@@ -215,9 +220,9 @@ def zisk_jmena():
     prijmeni = input("Zadej příjmení: ").strip()
     return jmeno, prijmeni
 
-# -------------------------------------------------------
-# Funkce pro uložení výsledků
-# -------------------------------------------------------
+
+
+
 
 def uloz_vysledek(jmeno, prijmeni, pocet_otazek):
     """
@@ -268,9 +273,10 @@ def uloz_vysledek(jmeno, prijmeni, pocet_otazek):
 
     print(f"Výsledek uložen do: {cesta}")
 
-# -------------------------------------------------------
-# Menu a průběh testu
-# -------------------------------------------------------
+
+
+
+
 
 def menu():
     """
@@ -321,9 +327,8 @@ def realne_menu():
             print("Program ukončen")
             break
 
-# -------------------------------------------------------
-# Spuštění programu
-# -------------------------------------------------------
+
+
 
 if __name__ == "__main__":
     realne_menu()

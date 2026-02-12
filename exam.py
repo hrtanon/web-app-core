@@ -3,13 +3,11 @@ import random
 from datetime import datetime
 
 # Globální seznamy pro sběr výsledků
-spravne_odpovedi = 0  # místo listu používám integer
+spravne_odpovedi = 0  
 spatne_odpovedi = 0
 spatne_otazky = []
 
-# -----------------------------
-# Funkce pro načtení otázek
-# -----------------------------
+
 def zisk_zadani(pocetotazek):
     try:
         with open("zadani.txt", "r", encoding="utf-8") as file:
@@ -22,9 +20,10 @@ def zisk_zadani(pocetotazek):
         print("Slozka s otazkami neexistuje")
         return []
 
-# -----------------------------
-# Funkce pro zadání počtu otázek
-# -----------------------------
+
+
+
+
 def pocet_otazek():
     while True:
         try:
@@ -38,9 +37,10 @@ def pocet_otazek():
         except ValueError:
             print("Spatny vstup, zadej cislo.")
 
-# -----------------------------
-# Funkce pro získání jména
-# -----------------------------
+
+
+
+
 def zisk_jmena():
     while True:
         jmeno = input("Zadej jmeno: ").strip()
@@ -50,9 +50,10 @@ def zisk_jmena():
         else:
             print("Neplatny vstup.")
 
-# -----------------------------
-# Funkce pro získání správné odpovědi
-# -----------------------------
+
+
+
+
 def overeni_odpovedi_spravne(odpovedi):
     for odpoved in odpovedi:
         casti = odpoved.split(";")
@@ -60,9 +61,10 @@ def overeni_odpovedi_spravne(odpovedi):
             return casti[1]
     return None
 
-# -----------------------------
-# Funkce pro testování otázek
-# -----------------------------
+
+
+
+
 def nacteni_otazek(pocetotazek):
     global spravne_odpovedi, spatne_odpovedi, spatne_otazky
     otazky = zisk_zadani(pocetotazek)
@@ -95,9 +97,11 @@ def nacteni_otazek(pocetotazek):
             spatne_odpovedi += 1
             spatne_otazky.append(blok)
 
-# -----------------------------
-# Funkce pro vyhodnocení úspěšnosti
-# -----------------------------
+
+
+
+
+
 def uspesnost(pocet_otazek):
     global spravne_odpovedi
     uspech = spravne_odpovedi / pocet_otazek * 100
@@ -114,9 +118,10 @@ def uspesnost(pocet_otazek):
     print(f"Úspěšnost: {uspech:.1f} %, známka: {znamka}")
     return uspech, znamka
 
-# -----------------------------
-# Funkce pro uložení výsledku
-# -----------------------------
+
+
+
+
 def uloz_vysledek(jmeno, prijmeni, pocet_otazek, spravne_odpovedi, spatne_otazky):
     if not os.path.exists("Vysledky_testu"):
         os.makedirs("Vysledky_testu")
@@ -157,9 +162,11 @@ def uloz_vysledek(jmeno, prijmeni, pocet_otazek, spravne_odpovedi, spatne_otazky
             f.write("\n")
     print(f"Výsledek uložen do: {cesta}")
 
-# -----------------------------
-# Menu
-# -----------------------------
+
+
+
+
+
 def menu():
     global spravne_odpovedi, spatne_odpovedi, spatne_otazky
     spravne_odpovedi = 0
@@ -176,9 +183,11 @@ def menu():
     uspesnost(pocet)
     uloz_vysledek(jmeno, prijmeni, pocet, spravne_odpovedi, spatne_otazky)
 
-# -----------------------------
-# Volba
-# -----------------------------
+
+
+
+
+
 def volba():
     while True:
         try:
@@ -197,7 +206,9 @@ def realne_menu():
             print("Nekdy priste")
             break
 
-# -----------------------------
-# Start programu
-# -----------------------------
+
+
+
+
+
 realne_menu()
