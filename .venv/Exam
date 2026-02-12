@@ -1,0 +1,105 @@
+import os
+import random
+from datetime import datetime
+
+spravne_odpovedi = 0
+spatne_odpovedi = 0
+spatne_otazky = []
+
+# --- NOVÉ FUNKCE PRO SOUBOR --- #
+
+def nacti_soubor(cesta):
+    """
+    Načte obsah textového souboru a vrátí seznam řádků.
+
+    Kontroluje:
+    - existenci souboru
+    - příponu .txt
+
+    Neřeší:
+    - strukturu otázek ani odpovědí
+
+    Args:
+        cesta (str): cesta k souboru
+
+    Returns:
+        list[str]: seznam řádků souboru
+
+    Raises:
+        ValueError: pokud soubor nemá .txt příponu
+        FileNotFoundError: pokud soubor neexistuje
+    """
+    if not cesta.endswith(".txt"):
+        raise ValueError("Soubor musí mít příponu .txt")
+
+    if not os.path.exists(cesta):
+        raise FileNotFoundError(f"Soubor {cesta} neexistuje")
+
+    with open(cesta, "r", encoding="utf-8") as f:
+        radky = f.readlines()
+    return radky
+
+def validuj_otazky(radky):
+    """
+    Zkontroluje, zda soubor dodržuje správnou strukturu otázek.
+
+    Očekávaný formát bloku otázky:
+    - 1 řádek s textem otázky
+    - 4 řádky odpovědí (0; text nebo 1; text)
+    - 2 prázdné řádky
+
+    Args:
+        radky (list[str]): seznam řádků souboru
+
+    Raises:
+        ValueError: pokud blok neodpovídá očekávané struktuře
+    """
+    i = 0
+    while i < len(radky):
+        blok = radky[i:i+7]
+        if len(blok) < 7:
+            raise ValueError("Neúplná otázka v souboru (méně než 7 řádků)")
+        if not blok[0].strip().startswith("Otázka:"):
+            raise ValueError(f"Řádek {i+1} není platná otázka")
+        for odpoved in blok[1:5]:
+            if not odpoved.strip() or not odpoved.strip()[0] in ["0","1"]:
+                raise ValueError(f"Nesprávný formát odpovědi: '{odpoved.strip()}'")
+        if blok[5].strip() != "" or blok[6].strip() != "":
+            raise ValueError(f"Chybí dva prázdné řádky mezi otázkami na řádcích {i+6}-{i+7}")
+        i += 7
+
+# --- EXISTUJÍCÍ FUNKCE (původní kód) --- #
+
+def zisk_zadani(pocet_otazek):
+    """
+    Vrátí náhodně vybrané otázky ze všech zdrojových souborů
+    a zamíchá pořadí otázek i odpovědí.
+    """
+    radky = []
+    slozka = "Testy_zdroj_otazek"
+    if not os.path.exists(slozka):
+        print(f"Složka {slozka} neexistuje")
+        return []
+
+    soubory = [f for f in os.listdir(slozka) if f.endswith(".txt")]
+    for soubor in soubory:
+        cesta = os.path.join(slozka, soubor)
+        try:
+            obsah = nacti_soubor(cesta)
+            validuj_otazky(obsah)
+            radky.extend(obsah)
+        except (ValueError, FileNotFoundError) as e:
+            print(f"Chyba ve souboru {soubor}: {e}")
+            continue
+
+    # rozděl na bloky po 7 řádcích
+    bloky = [radky[i:i+7] for i in range(0, len(radky), 7)]
+    random.shuffle(bloky)
+    return bloky[:pocet_otazek]
+
+# --- ZBYTEK KÓDU ZŮSTÁVÁ STEJNÝ --- #
+# (funkce nacteni_otazek, overeni_odpovedi_spravne, shoda_odpovedi, uspesnost, zisk_jmena, volba, menu, realne_menu, uloz_vysledek)
+# pouze je nyní jasně odděleno:
+# - nacti_soubor -> načte text
+# - validuj_otazky -> ověří formát
+
