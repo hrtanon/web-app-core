@@ -1,0 +1,334 @@
+import os
+import random
+from datetime import datetime
+
+spravne_odpovedi = 0
+spatne_odpovedi = 0
+spatne_otazky = []
+
+
+def validace_souboru(cesta_souboru):
+    """
+    Zkontroluje, zda soubor s otázkami splňuje požadovanou strukturu.
+    
+    Požadavky:
+    - Soubor musí být .txt
+    - První řádek: Autor: <jméno>
+    - Každá otázka začíná přesně 'Otázka: '
+    - Za otázkou jsou 4 řádky odpovědí '0; text' nebo '1; text'
+    - Mezi otázkami jsou 2 prázdné řádky
+    
+    Args:
+        cesta_souboru (str): cesta k souboru
+    
+    Returns:
+        bool: True pokud soubor vyhovuje, False pokud ne
+    """
+    if not cesta_souboru.endswith(".txt"):
+        print(f"{cesta_souboru} není .txt soubor")
+        return False
+    
+    try:
+        with open(cesta_souboru, "r", encoding="utf-8") as f:
+            radky = f.read().splitlines()
+            if len(radky) < 7:  
+                print(f"{cesta_souboru} má málo řádků")
+                return False
+            
+            if not radky[0].startswith("Autor:"):
+                print(f"{cesta_souboru} chybí autor")
+                return False
+            
+            i = 1
+            while i < len(radky):
+                if radky[i].strip() == "":
+                    i += 1
+                    continue
+                if not radky[i].startswith("Otázka:"):
+                    print(f"{cesta_souboru} - řádek {i+1} není otázka")
+                    return False
+                
+                for j in range(1, 5):
+                    if i + j >= len(radky):
+                        print(f"{cesta_souboru} - chybí odpovědi u otázky {radky[i]}")
+                        return False
+                    casti = radky[i + j].split(";")
+                    if len(casti) != 2 or casti[0].strip() not in ["0", "1"]:
+                        print(f"{cesta_souboru} - špatný formát odpovědi {radky[i+j]}")
+                        return False
+                i += 6  
+        return True
+    except FileNotFoundError:
+        print(f"{cesta_souboru} neexistuje")
+        return False
+
+def nacti_vsechny_otazky():
+    """
+    Načte všechny platné otázky ze složky 'Testy_zdroj_otazek'
+    
+    Returns:
+        list: seznam bloků otázek [[otázka, odp1, odp2, odp3, odp4], ...]
+    """
+    slozka = "Testy_zdroj_otazek"
+    bloky = []
+    if not os.path.exists(slozka):
+        print(f"Složka {slozka} neexistuje")
+        return []
+    
+    for soubor in os.listdir(slozka):
+        cesta = os.path.join(slozka, soubor)
+        if validace_souboru(cesta):
+            with open(cesta, "r", encoding="utf-8") as f:
+                radky = f.read().splitlines()
+                i = 1
+                while i < len(radky):
+                    if radky[i].strip() == "":
+                        i += 1
+                        continue
+                    if radky[i].startswith("Otázka:"):
+                        blok = radky[i:i+5]
+                        bloky.append(blok)
+                        i += 5
+                    else:
+                        i += 1
+    if len(bloky) < 5:
+        print("Není dostatek otázek pro spuštění testu (min. 5)")
+        return []
+    return bloky
+
+
+
+
+
+
+
+def nacteni_otazek(pocet_otazek):
+    """
+    Zobrazí otázky po jedné, zamíchá odpovědi a vyžádá
+    od uživatele zadání správné odpovědi (A-D).
+
+    Args:
+        pocet_otazek (int): počet otázek k zobrazení
+
+    Returns:
+        list: seznam tuple (odpověď uživatele, odpovědi, blok otázky)
+    """
+    vsechny_otazky = nacti_vsechny_otazky()
+    if not vsechny_otazky:
+        return []
+    
+    random.shuffle(vsechny_otazky)
+    vybrane = vsechny_otazky[:pocet_otazek]
+    vysledky = []
+
+    for blok in vybrane:
+        os.system("cls" if os.name == "nt" else "clear")
+        print(f"Otázka: {blok[0].strip()}")
+        odpovedi = blok[1:5]
+        random.shuffle(odpovedi)
+
+        oznaceni = ["A", "B", "C", "D"]
+        for i, moznost in enumerate(odpovedi):
+            print(f"{oznaceni[i]}) {moznost.strip()}")
+
+        while True:
+            vstup = input("Zadej odpověď (A-D): ").upper()
+            if vstup in oznaceni:
+                vysledky.append((vstup, odpovedi, blok))
+                break
+            else:
+                print("Neplatný vstup, zadej A, B, C nebo D.")
+
+    return vysledky
+
+
+
+def overeni_odpovedi_spravne(odpovedi):
+    """
+    Určí správnou odpověď z bloku odpovědí.
+
+    Args:
+        odpovedi (list[str]): seznam 4 řádků odpovědí
+
+    Returns:
+        str: text správné odpovědi
+    """
+    for odpoved in odpovedi:
+        casti = odpoved.strip().split(";")
+        if casti[0] == "1":
+            return casti[1].strip()
+    return None
+
+
+
+def shoda_odpovedi(vstup, spravna_odpoved, blok):
+    """
+    Porovná uživatelskou odpověď se správnou a aktualizuje globální počítadla.
+
+    Args:
+        vstup (str): zadání uživatele (A-D)
+        spravna_odpoved (str): správná odpověď
+        blok (list[str]): celý blok otázky pro uložení chyb
+    """
+    global spravne_odpovedi, spatne_odpovedi, spatne_otazky
+    oznaceni = ["A", "B", "C", "D"]
+    index = oznaceni.index(vstup)
+    odpoved = blok[1:5][index].split(";")[1].strip()
+    if odpoved == spravna_odpoved:
+        spravne_odpovedi += 1
+    else:
+        spatne_odpovedi += 1
+        spatne_otazky.append(blok)
+
+
+
+
+def uspesnost(pocet_otazek):
+    """
+    Vypočítá procentní úspěšnost a určí známku.
+
+    Args:
+        pocet_otazek (int): počet zobrazených otázek
+
+    Returns:
+        float: procentní úspěšnost
+    """
+    uspech = spravne_odpovedi / pocet_otazek * 100
+    if uspech >= 90:
+        znamka = 1
+    elif uspech >= 75:
+        znamka = 2
+    elif uspech >= 60:
+        znamka = 3
+    elif uspech >= 45:
+        znamka = 4
+    else:
+        znamka = 5
+
+    print(f"Správně: {spravne_odpovedi}, Chybně: {spatne_odpovedi}")
+    print(f"Úspěšnost: {uspech:.1f} %, Známka: {znamka}")
+    return uspech
+
+def zisk_jmena():
+    """
+    Zeptá se uživatele na jméno a příjmení.
+
+    Returns:
+        tuple[str, str]: jméno a příjmení
+    """
+    jmeno = input("Zadej jméno: ").strip()
+    prijmeni = input("Zadej příjmení: ").strip()
+    return jmeno, prijmeni
+
+
+
+
+
+def uloz_vysledek(jmeno, prijmeni, pocet_otazek):
+    """
+    Uloží výsledky testu do souboru ve složce 'Vysledky_testu'.
+
+    Args:
+        jmeno (str): jméno studenta
+        prijmeni (str): příjmení studenta
+        pocet_otazek (int): počet otázek
+    """
+    if not os.path.exists("Vysledky_testu"):
+        os.makedirs("Vysledky_testu")
+
+    now = datetime.now()
+    datum_soubor = now.strftime("%Y%m%d_%H%M%S")
+
+    jmeno_norm = jmeno.lower().replace(" ", "_")
+    prijmeni_norm = prijmeni.lower().replace(" ", "_")
+
+    procenta = spravne_odpovedi / pocet_otazek * 100
+    if procenta >= 90:
+        znamka = 1
+    elif procenta >= 75:
+        znamka = 2
+    elif procenta >= 60:
+        znamka = 3
+    elif procenta >= 45:
+        znamka = 4
+    else:
+        znamka = 5
+
+    nazev_souboru = f"{prijmeni_norm}_{jmeno_norm}_{datum_soubor}_{pocet_otazek}_{znamka}.txt"
+    cesta = os.path.join("Vysledky_testu", nazev_souboru)
+
+    with open(cesta, "w", encoding="utf-8") as f:
+        f.write(f"Vypracoval/a: {jmeno} {prijmeni}\n")
+        f.write(f"Otázek v testu: {pocet_otazek}\n")
+        f.write(f"Výsledná známka: {znamka}\n")
+        f.write(f"Procentní úspěšnost: {procenta:.1f} %\n")
+        f.write("Stupnice: <100-90>,(90-75>,(75-60>,(60-45>,(45-0>\n")
+        f.write(f"Datum a čas vyhodnocení: {now.day}.{now.month}.{now.year}, {now.hour}:{now.minute}:{now.second}\n\n")
+        f.write("----------------------\n")
+        f.write("Chybně zodpovězeno:\n\n")
+        for blok in spatne_otazky:
+            for radek in blok:
+                f.write(radek + "\n")
+            f.write("\n")
+
+    print(f"Výsledek uložen do: {cesta}")
+
+
+
+
+
+
+def menu():
+    """
+    Hlavní menu testu: načtení jména, počtu otázek, zobrazení otázek,
+    vyhodnocení výsledků a uložení do souboru.
+    """
+    global spravne_odpovedi, spatne_odpovedi, spatne_otazky
+    spravne_odpovedi = 0
+    spatne_odpovedi = 0
+    spatne_otazky = []
+
+    jmeno, prijmeni = zisk_jmena()
+    pocet_otazek = int(input("Kolik otázek (5-15)? "))
+
+    vysledky = nacteni_otazek(pocet_otazek)
+    for vstup, odpovedi, blok in vysledky:
+        spravna = overeni_odpovedi_spravne(odpovedi)
+        shoda_odpovedi(vstup, spravna, blok)
+
+    uspesnost(pocet_otazek)
+    uloz_vysledek(jmeno, prijmeni, pocet_otazek)
+
+def volba():
+    """
+    Nabídne menu pro spuštění testu nebo ukončení.
+
+    Returns:
+        int: 1-nová hra, 2-konec
+    """
+    while True:
+        try:
+            vol = int(input("1 - nová hra\n2 - konec\nZadej volbu: "))
+            if vol in [1, 2]:
+                return vol
+        except ValueError:
+            pass
+        print("Neplatná volba")
+
+def realne_menu():
+    """
+    Menu pro opakované spuštění testu nebo ukončení aplikace.
+    """
+    while True:
+        vol = volba()
+        if vol == 1:
+            menu()
+        else:
+            print("Program ukončen")
+            break
+
+
+
+
+if __name__ == "__main__":
+    realne_menu()

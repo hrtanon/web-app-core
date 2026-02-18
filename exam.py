@@ -3,6 +3,7 @@ import random
 from datetime import datetime
 
 # Globální seznamy pro sběr výsledků
+<<<<<<< HEAD
 spravne_odpovedi = 0  # místo listu používám integer
 spatne_odpovedi = 0
 spatne_otazky = []
@@ -10,6 +11,13 @@ spatne_otazky = []
 # -----------------------------
 # Funkce pro načtení otázek
 # -----------------------------
+=======
+spravne_odpovedi = 0  
+spatne_odpovedi = 0
+spatne_otazky = []
+
+
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
 def zisk_zadani(pocetotazek):
     try:
         with open("zadani.txt", "r", encoding="utf-8") as file:
@@ -22,9 +30,16 @@ def zisk_zadani(pocetotazek):
         print("Slozka s otazkami neexistuje")
         return []
 
+<<<<<<< HEAD
 # -----------------------------
 # Funkce pro zadání počtu otázek
 # -----------------------------
+=======
+
+
+
+
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
 def pocet_otazek():
     while True:
         try:
@@ -38,9 +53,16 @@ def pocet_otazek():
         except ValueError:
             print("Spatny vstup, zadej cislo.")
 
+<<<<<<< HEAD
 # -----------------------------
 # Funkce pro získání jména
 # -----------------------------
+=======
+
+
+
+
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
 def zisk_jmena():
     while True:
         jmeno = input("Zadej jmeno: ").strip()
@@ -50,9 +72,16 @@ def zisk_jmena():
         else:
             print("Neplatny vstup.")
 
+<<<<<<< HEAD
 # -----------------------------
 # Funkce pro získání správné odpovědi
 # -----------------------------
+=======
+
+
+
+
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
 def overeni_odpovedi_spravne(odpovedi):
     for odpoved in odpovedi:
         casti = odpoved.split(";")
@@ -60,9 +89,16 @@ def overeni_odpovedi_spravne(odpovedi):
             return casti[1]
     return None
 
+<<<<<<< HEAD
 # -----------------------------
 # Funkce pro testování otázek
 # -----------------------------
+=======
+
+
+
+
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
 def nacteni_otazek(pocetotazek):
     global spravne_odpovedi, spatne_odpovedi, spatne_otazky
     otazky = zisk_zadani(pocetotazek)
@@ -95,9 +131,17 @@ def nacteni_otazek(pocetotazek):
             spatne_odpovedi += 1
             spatne_otazky.append(blok)
 
+<<<<<<< HEAD
 # -----------------------------
 # Funkce pro vyhodnocení úspěšnosti
 # -----------------------------
+=======
+
+
+
+
+
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
 def uspesnost(pocet_otazek):
     global spravne_odpovedi
     uspech = spravne_odpovedi / pocet_otazek * 100
@@ -114,9 +158,16 @@ def uspesnost(pocet_otazek):
     print(f"Úspěšnost: {uspech:.1f} %, známka: {znamka}")
     return uspech, znamka
 
+<<<<<<< HEAD
 # -----------------------------
 # Funkce pro uložení výsledku
 # -----------------------------
+=======
+
+
+
+
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
 def uloz_vysledek(jmeno, prijmeni, pocet_otazek, spravne_odpovedi, spatne_otazky):
     if not os.path.exists("Vysledky_testu"):
         os.makedirs("Vysledky_testu")
@@ -157,9 +208,17 @@ def uloz_vysledek(jmeno, prijmeni, pocet_otazek, spravne_odpovedi, spatne_otazky
             f.write("\n")
     print(f"Výsledek uložen do: {cesta}")
 
+<<<<<<< HEAD
 # -----------------------------
 # Menu
 # -----------------------------
+=======
+
+
+
+
+
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
 def menu():
     global spravne_odpovedi, spatne_odpovedi, spatne_otazky
     spravne_odpovedi = 0
@@ -175,6 +234,7 @@ def menu():
     nacteni_otazek(pocet)
     uspesnost(pocet)
     uloz_vysledek(jmeno, prijmeni, pocet, spravne_odpovedi, spatne_otazky)
+<<<<<<< HEAD
     return jmeno, prijmeni
 
 
@@ -190,12 +250,24 @@ def menu2(jmeno ,prijmeni):
     nacteni_otazek(pocet)
     uspesnost(pocet)
     uloz_vysledek(jmeno, prijmeni, pocet, spravne_odpovedi, spatne_otazky)
+=======
+
+
+
+
+
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
 
 def volba():
     while True:
         try:
+<<<<<<< HEAD
             v = int(input("1-nová hra \n pokracovat jako stejny hrac \n 3-konec\n"))
             if v in [1,2,3]:
+=======
+            v = int(input("1-nová hra \n2-konec\n"))
+            if v in [1,2]:
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
                 return v
         except ValueError:
             print("Neplatny vstup.")
@@ -205,6 +277,7 @@ def realne_menu():
         choice = volba()
         if choice == 1:
             menu()
+<<<<<<< HEAD
         elif choice == 2:
             menu2()
         else:
@@ -229,3 +302,15 @@ def validace_souboru():
 
 def validace_slozky():
 
+=======
+        else:
+            print("Nekdy priste")
+            break
+
+
+
+
+
+
+realne_menu()
+>>>>>>> 17ff9aee15779944b52d89a630fc6ffddb63c783
