@@ -175,13 +175,27 @@ def menu():
     nacteni_otazek(pocet)
     uspesnost(pocet)
     uloz_vysledek(jmeno, prijmeni, pocet, spravne_odpovedi, spatne_otazky)
+    return jmeno, prijmeni
 
+
+def menu2(jmeno ,prijmeni):
+    global spravne_odpovedi, spatne_odpovedi, spatne_otazky
+    spravne_odpovedi = 0
+    spatne_odpovedi = 0
+    spatne_otazky = []
+    print("Načítám otázky z adresáře 'zadani_otazek'")
+    pocet = pocet_otazek()
+    print("Test pripraven. Zacina...")
+
+    nacteni_otazek(pocet)
+    uspesnost(pocet)
+    uloz_vysledek(jmeno, prijmeni, pocet, spravne_odpovedi, spatne_otazky)
 
 def volba():
     while True:
         try:
-            v = int(input("1-nová hra \n2-konec\n"))
-            if v in [1,2]:
+            v = int(input("1-nová hra \n pokracovat jako stejny hrac \n 3-konec\n"))
+            if v in [1,2,3]:
                 return v
         except ValueError:
             print("Neplatny vstup.")
@@ -191,6 +205,27 @@ def realne_menu():
         choice = volba()
         if choice == 1:
             menu()
+        elif choice == 2:
+            menu2()
         else:
             print("Nekdy priste")
             break
+    
+    
+    
+    
+
+
+def validace_souboru():
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+def validace_slozky():
+
