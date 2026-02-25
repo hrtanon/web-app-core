@@ -267,12 +267,41 @@ def solve_inequality(a, x1, x2, sign):
         '(-∞; 1) ∪ (3; +∞)'
     """
     # TODO: Pokud x1 > x2, prohoďte je: x1, x2 = x2, x1
+    if x1>x2:
+        x1,x2=x2,x1
     # TODO: Pro a > 0 (konvexní parabola):
+    if a> 0:
+        if sign == ">":
+            return f"(-∞; {x1}) ∪ ({x2}; +∞)"
+        elif sign == ">=":
+            return f"(-∞; {x1}⟩ ∪ ⟨{x2}; +∞)"
+        elif sign == "<":
+            return f"({x1}; {x2})"
+        elif sign == "<=":
+            return f"⟨{x1}; {x2}⟩"
+    #       - "<=" → f"⟨{x1}; {x2}⟩"
     #       - ">" → f"(-∞; {x1}) ∪ ({x2}; +∞)"
     #       - ">=" → f"(-∞; {x1}⟩ ∪ ⟨{x2}; +∞)"
     #       - "<" → f"({x1}; {x2})"
     #       - "<=" → f"⟨{x1}; {x2}⟩"
-    # TODO: Pro a < 0 (konkávní parabola) — opačné intervaly:
+    #       - ">=" → f"(-∞; {x1}⟩ ∪ ⟨{x2}; +∞)"
+    #       - "<" → f"({x1}; {x2})"
+    #       - "<=" → f"⟨{x1}; {x2}⟩"
+    #       - ">" → f"(-∞; {x1}) ∪ ({x2}; +∞)"
+    #       - ">=" → f"(-∞; {x1}⟩ ∪ ⟨{x2}; +∞)"
+    #       - "<" → f"({x1}; {x2})"
+    #       - "<=" → f"⟨{x1}; {x2}⟩"
+    # TODO:
+    else:
+        if sign == "<":
+            return f"(-∞; {x1}) ∪ ({x2}; +∞)"
+        elif sign == "<=":
+            return f"(-∞; {x1}⟩ ∪ ⟨{x2}; +∞)"
+        elif sign == ">":
+            return f"({x1}; {x2})"
+        elif sign == ">=":
+            return f"⟨{x1}; {x2}⟩"
+        # Pro a < 0 (konkávní parabola) — opačné intervaly:
     #       - "<" odpovídá stejným intervalům jako ">" u konvexní
     #       - ">" odpovídá stejným intervalům jako "<" u konvexní
     pass
@@ -288,6 +317,12 @@ def generate_inequalities(count):
         None — výsledky se vypisují do terminálu
     """
     # TODO: V cyklu for i in range(1, count + 1):
+    for i in range(1,count+1):
+        a,b,c,x1,x2=generate_random_equation()
+        sign=random.choice(["<"],[">"],["<="],[">="])
+        print(f"Nerovnice {i}: {a}x² + ({b})x + ({c}) {sign} 0")
+        solution = solve_inequality(a, x1, x2, sign)
+        print(f"  Řešení: {solution}\n")
     #       - Zavolejte generate_random_equation()
     #       - Vygenerujte náhodné znaménko: random.choice([">", ">=", "<", "<="])
     #       - Vypište nerovnici
@@ -320,6 +355,9 @@ def find_vertex(a, b, c):
     # TODO: Spočítejte x_v = -b / (2 * a)
     # TODO: Spočítejte y_v = a * x_v**2 + b * x_v + c
     # TODO: Vraťte (x_v, y_v)
+    x_v = -b / (2 * a)
+    y_v = a * x_v**2 + b * x_v + c
+    return x_v, y_v
     pass
 
 
@@ -332,6 +370,36 @@ def plot_quadratic():
     Returns:
         None — zobrazí graf
     """
+    a, b, c = get_coefficients()
+
+    x_values = np.linspace(-10, 10, 400)
+    y_values = a * x_values**2 + b * x_values + c
+
+    count, roots = solve_quadratic(a, b, c)
+    vertex = find_vertex(a, b, c)
+
+    plt.plot(x_values, y_values, label=f"y = {a}x² + {b}x + {c}")
+
+    # Vrchol
+    plt.scatter(*vertex, color="red", zorder=5)
+    plt.text(vertex[0], vertex[1],
+            f"  Vrchol ({vertex[0]:.2f}, {vertex[1]:.2f})",
+            verticalalignment='bottom')
+
+    # Kořeny
+    if count > 0:
+        for root in roots:
+            plt.scatter(root, 0, color="green", zorder=5)
+            plt.text(root, 0, f"  x = {root:.2f}", verticalalignment='top')
+
+    plt.axhline(0, color='black', linewidth=0.5)
+    plt.axvline(0, color='black', linewidth=0.5)
+    plt.grid(True)
+    plt.title("Graf kvadratické funkce")
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.legend()
+    plt.show()
     # TODO: Načtěte koeficienty pomocí get_coefficients()
     # TODO: Vytvořte x_values = np.linspace(-10, 10, 400)
     # TODO: Spočítejte y_values = a * x_values**2 + b * x_values + c
