@@ -320,7 +320,7 @@ def generate_inequalities(count):
     # TODO: V cyklu for i in range(1, count + 1):
     for i in range(1,count+1):
         a,b,c,x1,x2=generate_random_equation()
-        sign=random.choice("<",">","<=",">=")
+        sign=random.choice(["<",">","<=",">="])
         print(f"Nerovnice {i}: {a}x² + ({b})x + ({c}) {sign} 0")
         solution = solve_inequality(a, x1, x2, sign)
         print(f"  Řešení: {solution}\n")
