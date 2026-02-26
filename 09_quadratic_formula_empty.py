@@ -20,7 +20,8 @@ import os
 import random
 import math
 import numpy as np                      # pip install numpy
-import matplotlib.pyplot as plt         # pip install matplotlib
+import matplotlib.pyplot as plt    
+import prg_library     # pip install matplotlib
 
 
 ##############################################################
@@ -49,7 +50,7 @@ def get_coefficients():
     # TODO: Vytvořte nekonečnou smyčku while True
     while True:
         try:
-            a=float(input(f"cislo a"))
+            a=prg_library.get_float_input()
             if a==0:
                 print(f"a nemuze byt nila")
                 continue

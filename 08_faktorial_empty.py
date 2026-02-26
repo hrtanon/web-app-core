@@ -20,12 +20,12 @@ s nápovědou.
 import os
 import time
 import math
-       # pip install matplotlib
+import matplotlib.pyplot as plt       # pip install matplotlib
 
 
 # Globální konstanty a proměnné
 MEMO = {}                             # slovník pro ukládání mezivýsledků (memoizace)
-
+n=10
 
 ##############################################################
 ### ČÁST 1: Faktoriál pomocí cyklu for (iterace)
@@ -139,6 +139,7 @@ def factorial_safe_input(n=None):
     if n==None:
         print("NEPLATNY VSTUP")
     try :
+        result=1
         if n<0:
             print("neni def")
         elif n==0 :
@@ -241,6 +242,7 @@ def factorial_memo(n):
         >>> MEMO
         {2: 2, 3: 6, 4: 24, 5: 120}
     """
+    result=1
     # TODO: Deklarujte global MEMO
     global MEMO
     # TODO: Zkontrolujte, zda n je již v MEMO — pokud ano,# vraťte MEMO[n]
@@ -311,6 +313,7 @@ def graph_time_consumption(max_n=150):
     Returns:
         None — zobrazí graf
     """
+    factorial_range = range(1, max_n + 1)
     time_list_iteracion=[]
     time_list_recursion=[]
     for i in range(n,n+1):
@@ -328,6 +331,17 @@ def graph_time_consumption(max_n=150):
         if n<0:
             print("neni def")
         elif n==0 :
+            plt.plot(factorial_range, time_list_iteracion, label='Iterativní', color='blue')
+            plt.plot(factorial_range, time_list_recursion, label='Rekurzivní', color='red')
+
+            plt.xlabel('n (velikost čísla)')
+            plt.ylabel('Čas (ms)')
+            plt.title('Porovnání výkonu iterativní a rekurzivní verze faktoriálu')
+
+            plt.legend()
+            plt.grid(True)
+            plt.show()
+    
             return 1
         
         
@@ -336,6 +350,7 @@ def graph_time_consumption(max_n=150):
         time_list_recursion.append(time)
         return nx
     except TypeError:
+        return None
     # TODO: Vytvořte prázdné seznamy time_list_iteracion a time_list_recursion
     # TODO: Vytvořte factorial_range = range(1, max_n + 1)
     # TODO: V cyklu pro každé n:
@@ -370,8 +385,8 @@ def graph_time_consumption(max_n=150):
 
 if __name__ == "__main__":
     os.system("cls")
-
-    n = 5
+    n=int(input("asgdasug"))
+    
     # faktoriál pomocí iterace
     print("Faktoriál pomocí cyklu for, iterace:")
     print(f"{n}! = {factorial(n)}")
