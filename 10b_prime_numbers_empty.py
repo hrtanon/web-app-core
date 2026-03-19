@@ -140,10 +140,10 @@ def generate_primes_naive(limit: int) -> List[int]:
     # TODO: Pokud je limit menší než 2, vraťte prázdný seznam.
     if limit<=2:
         primes=[]
-    for i in range(2,limit):
+    for i in range(2,limit+1):
         if is_prime_naive(i):
             primes.append(i)
-        return primes
+    return primes
 
     # TODO: Vytvořte prázdný seznam pro ukládání nalezených prvočísel.
     # TODO: Pomocí for cyklu projděte všechna čísla od 2 do limitu včetně.
@@ -227,8 +227,8 @@ def sieve_of_eratosthenes(limit: int) -> List[int]:
         return []
     flags= [True]*(limit+1)
     flags[0]=flags[1]=False
-    hranice=math.sqrt(limit)
-    for i in range(2,hranice):
+    hranice=math.sqrt(limit)+1
+    for i in range(2, hranice):
         if flags[i]:
             for multiple in range(i*i, limit + 1,i):
                 flags[multiple]=False
@@ -243,6 +243,8 @@ def sieve_of_eratosthenes(limit: int) -> List[int]:
     #         počínaje číslem number * number.
     # TODO: Na závěr převeďte seznam True/False na seznam indexů, které
     #       zůstaly True (to jsou prvočísla).
+    primes_naive = generate_primes_naive(limit)
+    primes_sieve = sieve_of_eratosthenes(limit)
     # Nápověda: Využijte enumerate() pro převod seznamu příznaků na čísla.
     pass
 
@@ -273,9 +275,22 @@ def benchmark_prime_algorithms(limit: int) -> None:
         === Benchmark for limit = 1000 ===
         ...
     """
+    start=time.perf_counter()
+    generate_primes_naive(limit)
+    cas1=time.perf_counter()-start
+    print(f"{cas1:.6f} s")
     # TODO: Vytiskněte úvodní hlavičku benchmarku (oddělovače + limit).
     # TODO: Změřte čas pro generate_primes_naive pomocí time.perf_counter()
     start=time.perf_counter()
+    sieve_of_eratosthenes(limit)
+    cas=time.perf_counter()-start
+    print(f"{cas:.6f} s")
+    primes_naive = generate_primes_naive(limit)
+    primes_sieve = sieve_of_eratosthenes(limit)
+    if primes_sieve==primes_naive:
+        print ("sedi")
+    else:
+        print("NESEDI")
     # TODO: Změřte čas pro sieve_of_eratosthenes stejným způsobem.
     # TODO: Vytiskněte do konzole dobu běhu obou algoritmů ve vteřinách
     #       s rozumným formátováním.
@@ -407,7 +422,7 @@ def primes_with_fixed_digit_count(num_digits: int) -> List[int]:
 ##############################################################
 
 
-def _demo_basic() -> None:
+
     """Spustí základní ukázku implementované funkcionality.
 
     Funkce slouží k rychlému vizuálnímu přehledu toho, jak se různé
@@ -421,23 +436,28 @@ def _demo_basic() -> None:
     #       prime_factorization.
     # Nápověda: Dbejte na přehledné oddělovače a popisky, aby byl výstup
     #           srozumitelný i bez nahlížení do kódu.
-    pass
+def _demo_basic() -> None:
+    """Spustí základní ukázku implementované funkcionality (bez bonusů)."""
+    limit = 30
+    print("=== Demo: Generování prvočísel do", limit, "===")
+    
+    # Naivní generátor
+    primes_naive = generate_primes_naive(limit)
+    print("Naivní generátor:", primes_naive)
+    
+    # Eratosthenovo síto
+    primes_sieve = sieve_of_eratosthenes(limit)
+    print("Eratosthenovo síto:", primes_sieve)
+    
+    # Porovnání shody
+    print("Seznamy shodné:", primes_naive == primes_sieve)
+    
+    # Test prvočíselnosti
+    test_numbers = [1, 2, 3, 4, 17, 20, 29]
+    print("\n=== Test prvočíselnosti ===")
+    for n in test_numbers:
+        print(f"{n}: Naivní test = {is_prime_naive(n)}, Test do √n = {is_prime_sqrt(n)}")
 
 
 if __name__ == "__main__":
-    # PRO TESTOVÁNÍ: Odkomentujte postupně po implementaci jednotlivých částí.
-    # Doporučené pořadí:
-    #
-    # print(is_divisible(10, 2))
-    # print(is_prime_naive(17))
-    # print(generate_primes_naive(30))
-    # print(is_prime_sqrt(97))
-    # print(sieve_of_eratosthenes(50))
-    # benchmark_prime_algorithms(limit=10_000)
-    # print(prime_factorization(120))
-    # print(count_primes_in_interval(1, 100))
-    # print(largest_prime_below(100))
-    # print(primes_with_fixed_digit_count(2))
-    # _demo_basic()
-    pass
-``
+    _demo_basic()
