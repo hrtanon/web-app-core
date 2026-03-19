@@ -227,8 +227,8 @@ def sieve_of_eratosthenes(limit: int) -> List[int]:
         return []
     flags= [True]*(limit+1)
     flags[0]=flags[1]=False
-    hranice=math.sqrt(limit)+1
-    for i in range(2, hranice):
+    hranice=int(math.sqrt(limit)+1)
+    for i in range(2,hranice):
         if flags[i]:
             for multiple in range(i*i, limit + 1,i):
                 flags[multiple]=False
