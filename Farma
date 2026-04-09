@@ -85,11 +85,11 @@ WEATHER = {
     },
 }
 
-PLOT_COST = 150       # cena za koupi nové parcely
-MAX_PLOTS = 8         # maximální počet parcel
-STARTING_GOLD = 200   # počáteční zlato hráče
-STARTING_PLOTS = 3    # počáteční počet parcel
-WITHER_CHANCE = 0.4   # pravděpodobnost zahynutí rizikové plodiny
+PLOT_COST = 150      
+MAX_PLOTS = 8         
+STARTING_GOLD = 200   
+STARTING_PLOTS = 3    
+WITHER_CHANCE = 0.4   
 
 
 ##############################################################
@@ -151,12 +151,12 @@ def advance_day(game):
 
     for i, plot in enumerate(game["plots"]):
         if plot["crop"] is None:
-            continue  # prázdná parcela, přeskočit
+            continue  
 
         crop_id = plot["crop"]
         crop_data = CROPS[crop_id]
 
-        # Kontrola rizika sucha
+        
         if weather_id == "drought" and crop_data["drought_risk"]:
             if random.random() < WITHER_CHANCE:
                 withered.append((i, crop_data["name"]))
@@ -165,7 +165,7 @@ def advance_day(game):
                 plot["ready"] = False
                 continue
 
-        # Kontrola rizika bouře
+        
         if weather_id == "storm" and crop_data["storm_risk"]:
             if random.random() < WITHER_CHANCE:
                 withered.append((i, crop_data["name"]))
@@ -174,10 +174,10 @@ def advance_day(game):
                 plot["ready"] = False
                 continue
 
-        # Normální růst
+        
         plot["days_grown"] += growth
 
-        # Kontrola zralosti
+        
         if plot["days_grown"] >= crop_data["days"]:
             plot["ready"] = True
 
@@ -194,7 +194,6 @@ def harvest(game):
         if plot["ready"] and plot["crop"] is not None:
             crop_id = plot["crop"]
 
-            # Přičti do gained (slovník toho, co bylo právě sklizeno)
             gained[crop_id] = gained.get(crop_id, 0) + 1
 
             # Přičti do celkového inventáře
