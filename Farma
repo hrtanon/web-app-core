@@ -1,0 +1,492 @@
+# -*- coding: utf-8 -*-
+# Příliš žluťoučký kůň úpěl ďábelské ódy - testovací pangram
+
+"""Farma Simulator – hotová implementace."""
+
+import json
+import os
+import random
+
+SAVE_FILE = "save_game.json"
+
+
+##############################################################
+### CAST 1: Konstanty
+##############################################################
+
+CROPS = {
+    "wheat": {
+        "name": "Pšenice",
+        "days": 3,
+        "seed_price": 10,
+        "sell_price": 25,
+        "drought_risk": True,
+        "storm_risk": False,
+    },
+    "corn": {
+        "name": "Kukuřice",
+        "days": 5,
+        "seed_price": 20,
+        "sell_price": 55,
+        "drought_risk": True,
+        "storm_risk": True,
+    },
+    "tomato": {
+        "name": "Rajče",
+        "days": 4,
+        "seed_price": 15,
+        "sell_price": 40,
+        "drought_risk": True,
+        "storm_risk": True,
+    },
+    "potato": {
+        "name": "Brambor",
+        "days": 6,
+        "seed_price": 12,
+        "sell_price": 35,
+        "drought_risk": False,
+        "storm_risk": False,
+    },
+    "sunflower": {
+        "name": "Slunečnice",
+        "days": 7,
+        "seed_price": 25,
+        "sell_price": 80,
+        "drought_risk": False,
+        "storm_risk": True,
+    },
+}
+
+WEATHER = {
+    "sunny": {
+        "name": "Slunecno",
+        "growth": 1,
+        "weight": 0.35,
+    },
+    "rainy": {
+        "name": "Dest",
+        "growth": 2,
+        "weight": 0.25,
+    },
+    "cloudy": {
+        "name": "Oblacno",
+        "growth": 1,
+        "weight": 0.20,
+    },
+    "drought": {
+        "name": "Sucho",
+        "growth": 0,
+        "weight": 0.10,
+    },
+    "storm": {
+        "name": "Boure",
+        "growth": 0,
+        "weight": 0.10,
+    },
+}
+
+PLOT_COST = 150       # cena za koupi nové parcely
+MAX_PLOTS = 8         # maximální počet parcel
+STARTING_GOLD = 200   # počáteční zlato hráče
+STARTING_PLOTS = 3    # počáteční počet parcel
+WITHER_CHANCE = 0.4   # pravděpodobnost zahynutí rizikové plodiny
+
+
+##############################################################
+### CAST 2: Inicializace a ukládání hry
+##############################################################
+
+def new_plot():
+    """Vytvoří a vrátí slovník reprezentující jednu prázdnou parcelu."""
+    return {
+        "crop": None,       # ID plodiny (string) nebo None pokud je parcela prázdná
+        "days_grown": 0,    # kolik dní již plodina roste
+        "ready": False,     # True = plodina je připravena ke sklizni
+    }
+
+
+def new_game():
+    """Vytvoří a vrátí slovník reprezentující novou hru."""
+    return {
+        "day": 1,
+        "gold": STARTING_GOLD,
+        "plots": [new_plot() for _ in range(STARTING_PLOTS)],
+        "inventory": {},         # slovník {crop_id: počet}
+        "weather_today": "sunny",
+    }
+
+
+def load_game():
+    """Načte hru ze souboru SAVE_FILE, nebo vytvoří novou hru."""
+    if os.path.exists(SAVE_FILE):
+        with open(SAVE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return new_game()
+
+
+def save_game(game):
+    """Uloží game slovník do souboru SAVE_FILE ve formátu JSON."""
+    with open(SAVE_FILE, "w", encoding="utf-8") as f:
+        json.dump(game, f, indent=2, ensure_ascii=False)
+
+
+##############################################################
+### CAST 3: Herní logika
+##############################################################
+
+def generate_weather():
+    """Náhodně vybere ID počasí podle vah definovaných v WEATHER."""
+    ids = list(WEATHER.keys())
+    weights = [WEATHER[w]["weight"] for w in ids]
+    return random.choices(ids, weights=weights, k=1)[0]
+
+
+def advance_day(game):
+    """Zpracuje jeden herní den: vygeneruje počasí, aktualizuje růst plodin."""
+    weather_id = generate_weather()
+    game["weather_today"] = weather_id
+    growth = WEATHER[weather_id]["growth"]
+
+    withered = []
+
+    for i, plot in enumerate(game["plots"]):
+        if plot["crop"] is None:
+            continue  # prázdná parcela, přeskočit
+
+        crop_id = plot["crop"]
+        crop_data = CROPS[crop_id]
+
+        # Kontrola rizika sucha
+        if weather_id == "drought" and crop_data["drought_risk"]:
+            if random.random() < WITHER_CHANCE:
+                withered.append((i, crop_data["name"]))
+                plot["crop"] = None
+                plot["days_grown"] = 0
+                plot["ready"] = False
+                continue
+
+        # Kontrola rizika bouře
+        if weather_id == "storm" and crop_data["storm_risk"]:
+            if random.random() < WITHER_CHANCE:
+                withered.append((i, crop_data["name"]))
+                plot["crop"] = None
+                plot["days_grown"] = 0
+                plot["ready"] = False
+                continue
+
+        # Normální růst
+        plot["days_grown"] += growth
+
+        # Kontrola zralosti
+        if plot["days_grown"] >= crop_data["days"]:
+            plot["ready"] = True
+
+    game["day"] += 1
+    save_game(game)
+    return withered
+
+
+def harvest(game):
+    """Sklidí všechny parcely označené jako ready do inventáře."""
+    gained = {}
+
+    for plot in game["plots"]:
+        if plot["ready"] and plot["crop"] is not None:
+            crop_id = plot["crop"]
+
+            # Přičti do gained (slovník toho, co bylo právě sklizeno)
+            gained[crop_id] = gained.get(crop_id, 0) + 1
+
+            # Přičti do celkového inventáře
+            game["inventory"][crop_id] = game["inventory"].get(crop_id, 0) + 1
+
+            # Vynuluj parcelu
+            plot["crop"] = None
+            plot["days_grown"] = 0
+            plot["ready"] = False
+
+    return gained
+
+
+##############################################################
+### CAST 4: Zobrazení
+##############################################################
+
+def clear():
+    """Vyčistí terminál (funguje na Windows i Linux/Mac)."""
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("clear")
+
+
+def print_farm(game):
+    """Vyčistí terminál a vypíše aktuální stav farmy."""
+    clear()
+
+    weather_name = WEATHER[game["weather_today"]]["name"]
+
+    print("=" * 50)
+    print(f"  FARMA SIMULATOR  |  Den: {game['day']}  |  Zlato: {game['gold']} zl")
+    print(f"  Počasí: {weather_name}")
+    print("=" * 50)
+
+    print("\nPARCELY:")
+    for i, plot in enumerate(game["plots"]):
+        if plot["crop"] is None:
+            print(f"  [{i + 1}] (prázdná)")
+        elif plot["ready"]:
+            crop_name = CROPS[plot["crop"]]["name"]
+            print(f"  [{i + 1}] {crop_name} *** SKLIZITELNA ***")
+        else:
+            crop_id = plot["crop"]
+            crop_name = CROPS[crop_id]["name"]
+            days_needed = CROPS[crop_id]["days"]
+            print(f"  [{i + 1}] {crop_name} – roste {plot['days_grown']}/{days_needed} dní")
+
+    print("\nSKLAD:")
+    if not game["inventory"]:
+        print("  (prázdný)")
+    else:
+        for crop_id, qty in game["inventory"].items():
+            print(f"  {CROPS[crop_id]['name']}: {qty} ks")
+
+    print()
+
+
+##############################################################
+### CAST 5: Akce hráče
+##############################################################
+
+def plant_crop(game):
+    """Zobrazí menu pro výběr prázdné parcely a plodiny, zasadí semeno."""
+    # Najdi prázdné parcely
+    empty_indices = [i for i, p in enumerate(game["plots"]) if p["crop"] is None]
+
+    if not empty_indices:
+        print("Nemas zadnou prazdnou parcelu!")
+        input("Stiskni Enter...")
+        return
+
+    # Výběr parcely
+    print("\nPrázdné parcely:")
+    for i in empty_indices:
+        print(f"  [{i + 1}] Parcela {i + 1}")
+    print("  [0] Zpět")
+
+    try:
+        choice = int(input("Vyber parcelu: "))
+    except ValueError:
+        print("Neplatna volba.")
+        input("Stiskni Enter...")
+        return
+
+    if choice == 0:
+        return
+
+    plot_index = choice - 1
+    if plot_index not in empty_indices:
+        print("Neplatna parcela.")
+        input("Stiskni Enter...")
+        return
+
+    # Výběr plodiny
+    crop_ids = list(CROPS.keys())
+    print("\nDostupné plodiny:")
+    for j, crop_id in enumerate(crop_ids):
+        c = CROPS[crop_id]
+        print(f"  [{j + 1}] {c['name']} – semeno: {c['seed_price']} zl, prodej: {c['sell_price']} zl, roste: {c['days']} dni")
+    print("  [0] Zpět")
+
+    try:
+        crop_choice = int(input("Vyber plodinu: "))
+    except ValueError:
+        print("Neplatna volba.")
+        input("Stiskni Enter...")
+        return
+
+    if crop_choice == 0:
+        return
+
+    if crop_choice < 1 or crop_choice > len(crop_ids):
+        print("Neplatna plodina.")
+        input("Stiskni Enter...")
+        return
+
+    selected_crop_id = crop_ids[crop_choice - 1]
+    seed_price = CROPS[selected_crop_id]["seed_price"]
+
+    # Kontrola zlata
+    if game["gold"] < seed_price:
+        print(f"Nemas dost zlata! Potrebujes {seed_price} zl, mas {game['gold']} zl.")
+        input("Stiskni Enter...")
+        return
+
+    # Zasadění
+    game["gold"] -= seed_price
+    game["plots"][plot_index]["crop"] = selected_crop_id
+    game["plots"][plot_index]["days_grown"] = 0
+    game["plots"][plot_index]["ready"] = False
+    save_game(game)
+
+    print(f"Zasadil jsi {CROPS[selected_crop_id]['name']} na parcele {plot_index + 1}.")
+    input("Stiskni Enter...")
+
+
+def do_harvest(game):
+    """Sklidí všechny zralé plodiny a vypíše, co bylo sklizeno."""
+    gained = harvest(game)
+
+    if not gained:
+        print("Zadna plodina jeste neni sklizitelna.")
+    else:
+        print("Sklizen:")
+        for crop_id, qty in gained.items():
+            print(f"  {CROPS[crop_id]['name']}: {qty} ks")
+        save_game(game)
+
+    input("Stiskni Enter...")
+
+
+def sell_crops(game):
+    """Zobrazí menu pro prodej plodin ze skladu."""
+    if not game["inventory"]:
+        print("Sklad je prazdny, neni co prodat.")
+        input("Stiskni Enter...")
+        return
+
+    crop_ids = list(game["inventory"].keys())
+    print("\nSklad (prodejní ceny):")
+    for j, crop_id in enumerate(crop_ids):
+        qty = game["inventory"][crop_id]
+        price = CROPS[crop_id]["sell_price"]
+        print(f"  [{j + 1}] {CROPS[crop_id]['name']} – {qty} ks, {price} zl/ks")
+    print("  [0] Zpět")
+
+    try:
+        choice = int(input("Vyber plodinu k prodeji: "))
+    except ValueError:
+        print("Neplatna volba.")
+        input("Stiskni Enter...")
+        return
+
+    if choice == 0:
+        return
+
+    if choice < 1 or choice > len(crop_ids):
+        print("Neplatna volba.")
+        input("Stiskni Enter...")
+        return
+
+    selected_id = crop_ids[choice - 1]
+    available = game["inventory"][selected_id]
+
+    try:
+        qty = int(input(f"Kolik kusů prodat? (max {available}): "))
+    except ValueError:
+        print("Neplatne cislo.")
+        input("Stiskni Enter...")
+        return
+
+    if qty <= 0 or qty > available:
+        print("Neplatne mnozstvi.")
+        input("Stiskni Enter...")
+        return
+
+    earned = qty * CROPS[selected_id]["sell_price"]
+    game["inventory"][selected_id] -= qty
+
+    if game["inventory"][selected_id] == 0:
+        del game["inventory"][selected_id]  # odstraň klíč s nulou
+
+    game["gold"] += earned
+    save_game(game)
+
+    print(f"Prodal jsi {qty} ks {CROPS[selected_id]['name']} za {earned} zl.")
+    input("Stiskni Enter...")
+
+
+def buy_plot(game):
+    """Přidá hráči novou parcelu za PLOT_COST zlata."""
+    if len(game["plots"]) >= MAX_PLOTS:
+        print(f"Mas uz maximalni pocet parcel ({MAX_PLOTS}).")
+        input("Stiskni Enter...")
+        return
+
+    if game["gold"] < PLOT_COST:
+        print(f"Nemas dost zlata! Parcela stoji {PLOT_COST} zl, mas {game['gold']} zl.")
+        input("Stiskni Enter...")
+        return
+
+    game["gold"] -= PLOT_COST
+    game["plots"].append(new_plot())
+    save_game(game)
+
+    print(f"Koupil jsi novou parcelu za {PLOT_COST} zl! Nyni mas {len(game['plots'])} parcel.")
+    input("Stiskni Enter...")
+
+
+def next_day(game):
+    """Posune hru o jeden den dopředu a vypíše zprávy o počasí a škodách."""
+    withered = advance_day(game)
+
+    weather_id = game["weather_today"]
+    weather_name = WEATHER[weather_id]["name"]
+    growth = WEATHER[weather_id]["growth"]
+
+    print(f"\nNovy den! Pocasi: {weather_name}")
+
+    if growth == 2:
+        print("Dest urychlil rust plodin!")
+    elif growth == 0:
+        print("Extremni pocasi zpomalilo plodiny.")
+
+    if withered:
+        print("Tyto plodiny zahynuly:")
+        for plot_num, crop_name in withered:
+            print(f"   Parcela {plot_num + 1}: {crop_name}")
+
+    input("Stiskni Enter...")
+
+
+##############################################################
+### CAST 6: Hlavní smyčka
+##############################################################
+
+def main():
+    """Hlavní smyčka hry – načte hru, opakuje: zobraz -> menu -> akce."""
+    game = load_game()
+
+    while True:
+        print_farm(game)
+
+        print("Co chceš dělat?")
+        print("  [1] Zasadit plodinu")
+        print("  [2] Sklidit zralé plodiny")
+        print("  [3] Prodat plodiny")
+        print("  [4] Koupit novou parcelu")
+        print("  [5] Další den")
+        print("  [6] Ukončit hru")
+
+        choice = input("Tvoje volba: ").strip()
+
+        if choice == "1":
+            plant_crop(game)
+        elif choice == "2":
+            do_harvest(game)
+        elif choice == "3":
+            sell_crops(game)
+        elif choice == "4":
+            buy_plot(game)
+        elif choice == "5":
+            next_day(game)
+        elif choice == "6":
+            print("Nashledanou! Hra byla ulozena.")
+            break
+        else:
+            print("Neplatna volba.")
+            input("Stiskni Enter...")
+
+
+if __name__ == "__main__":
+    main()
