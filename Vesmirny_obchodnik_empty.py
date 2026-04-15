@@ -91,13 +91,14 @@ def load_game():
         Nacteny nebo novy game slovnik.
     """
     if os.path.exists:
-        with open (SAVE_FILE, "r" ) as f:
+        with open (SAVE_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
             
     # TODO: Pouzij os.path.exists() pro kontrolu existence souboru.
     # TODO: Pokud soubor existuje, otevri ho, nacti JSON a vrat slovnik.
     # TODO: Pokud neexistuje, vrat new_game().
-    else :
-        return new_game()
+    
+    return new_game()
     raise NotImplementedError
 
 
@@ -107,6 +108,8 @@ def save_game(game):
     Args:
         game: Slovnik s aktualnim stavem hry.
     """
+    with open(SAVE_FILE, "w" ,encoding="utf-8")as f:
+        json.dump(game,f,indent=2,ensure_ascii=False)
     # TODO: Otevri SAVE_FILE pro zapis (mod "w") s kodovanim utf-8.
     # TODO: Pouzij json.dump() pro ulozeni slovniku game. Nastav indent=2.
     raise NotImplementedError
@@ -122,7 +125,7 @@ def cargo_used(game):
     Returns:
         Cele cislo – soucet vsech hodnot v game["cargo"].
     """
-    sum()
+    return sum(game["cargo"].values())
     # TODO: Vrat soucet vsech hodnot v game["cargo"].
     #       Tip: pouzij sum() a .values(). Funguje i pro prazdny slovnik.
     raise NotImplementedError
@@ -162,10 +165,27 @@ def apply_event(game, event_id):
     #loss = min(PIRATE_LOSS, game["credits"])
     #         Odecti loss od game["credits"], vrat popis.
     # TODO: Implementuj vetev pro "asteroid":
-    print(EVENTS["pirates":["problerm"]])
-    loss= min(PIRATE_LOSS,game["credicts"])
-    game["credits"]=game["credits"]-PIRATE_LOSS
-    
+    if event_id=="pirates":
+        
+        loss= min(PIRATE_LOSS,game["credits"])
+        game["credits"]=game["credits"]-loss
+        return "utok piraty"
+        
+    elif event_id=="asteroid":
+        misto=CARGO_CAPACITY-cargo_used(game)
+        if misto>0:
+            for i in range (3):
+                n=random.choice("potravina","minerals","tech")
+                game["cargo"]+=n
+                print(n)
+            return "atreroid"
+        else:
+            print("naklad je plny")
+            return None
+    elif event_id== "smooth":
+        game[credits]+=15 
+        print("bylo pricteno 15 kreditu")
+        return "smooth"
     #         Zjisti volne misto (CARGO_CAPACITY - cargo_used(game)).
     #         Pokud volne > 0: vyber nahodne zbozi, pridej min(3, volne) kusu.
     #         Pouzij game["cargo"].get(good_id, 0) pro bezpecne pricteni.
