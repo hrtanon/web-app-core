@@ -238,94 +238,170 @@ def travel(game):
 ##############################################################
 
 def buy_goods(game):
-    """Zobrazi menu pro nakup zbozi na aktualni planet.
+    # 1. Zkontroluj volné místo
+    volne = CARGO_CAPACITY - cargo_used(game)
+    if volne == 0:
+        print("Náklad je plný! Nejdřív něco prodej.")
+        input("Enter pro pokračování...")
+        return
 
-    Overuje: dostupne misto v nakladu, platnost volby, dostatek kreditu.
-    Po nakupu odecte kredity, prida zbozi do cargo a ulozi hru.
+    # 2. Vypiš zboží s cenami
+    planet = game["location"]
+    ceny = PLANETS[planet]["prices"]       # slovník {"potravina": 10, ...}
+    zbozi_list = list(ceny.items())        # [("potravina", 10), ("tech", 50), ...]
 
-    Args:
-        game: Slovnik s aktualnim stavem hry.
-    """
-    # TODO: Zjisti volne misto (CARGO_CAPACITY - cargo_used(game)).
-    #       Pokud je 0, vypis chybu a vrat se.
-    # TODO: Vypis seznam zbozi s cenami a nechej hrace vybrat.
-    #       Pouzij try/except ValueError, over platnost volby (0 = zpet).
-    # TODO: Vypocti max_buy = min(volne_misto, game["credits"] // cena).
-    #       Pokud je 0, vypis chybu a vrat se.
-    # TODO: Nechej hrace zadat mnozstvi. Over ze 0 < qty <= max_buy.
-    # TODO: Odecti kredity, pricti zbozi do game["cargo"] (pouzij .get()).
-    #       Zavolej save_game(game) a vypis potvrzeni.
-    raise NotImplementedError
+    print(f"\n=== Nákup – {planet} ===")
+    print("0. Zpět")
+    for i, (zbozi, cena) in enumerate(zbozi_list, 1):
+        print(f"{i}. {zbozi:12} {cena} kreditů/ks")
+
+    # 3. Načti volbu
+    while True:
+        try:
+            volba = int(input("Co chceš koupit: "))
+            if volba == 0:
+                return
+            if volba < 1 or volba > len(zbozi_list):
+                print(f"Zadej 0–{len(zbozi_list)}.")
+                continue
+            break
+        except ValueError:
+            print("Zadej číslo.")
+
+    zbozi, cena = zbozi_list[volba - 1]
+
+    # 4. Kolik toho max. lze koupit
+    max_buy = min(volne, game["credits"] // cena)
+    if max_buy == 0:
+        print("Nestačí kredity nebo místo v nákladu.")
+        input("Enter pro pokračování...")
+        return
+
+    # 5. Načti množství
+    while True:
+        try:
+            qty = int(input(f"Kolik kusů? (1–{max_buy}): "))
+            if 0 < qty <= max_buy:
+                break
+            print(f"Zadej 1–{max_buy}.")
+        except ValueError:
+            print("Zadej číslo.")
+
+    # 6. Proveď nákup
+    game["credits"] -= qty * cena
+    game["cargo"][zbozi] = game["cargo"].get(zbozi, 0) + qty
+    save_game(game)
+    print(f"✅ Koupil jsi {qty}× {zbozi} za {qty * cena} kreditů.")
+    input("Enter pro pokračování...")
 
 
 def sell_goods(game):
-    """Zobrazi menu pro prodej zbozi ze skladu za ceny aktualni planety.
+    # 1. Zkontroluj neprázdný náklad
+    if not game["cargo"]:
+        print("Náklad je prázdný, nemáš co prodávat.")
+        input("Enter pro pokračování...")
+        return
 
-    Overuje: neprazdny naklad, platnost volby, platne mnozstvi.
-    Po prodeji pricte kredity, odecte zbozi z cargo (pri 0 klíc smaze) a ulozi.
+    # 2. Vypiš obsah nákladu s cenami
+    planet = game["location"]
+    ceny = PLANETS[planet]["prices"]
+    cargo_list = list(game["cargo"].items())   # [("tech", 3), ...]
 
-    Args:
-        game: Slovnik s aktualnim stavem hry.
-    """
-    # TODO: Pokud je game["cargo"] prazdny, vypis zpravy a vrat se.
-    # TODO: Priprav seznam zbozi v nakladu a vypis je s cenami a celkovym ziskem.
-    # TODO: Nechej hrace vybrat zbozi (0 = zpet). Over platnost volby.
-    # TODO: Nechej hrace zadat mnozstvi. Over ze 0 < qty <= available.
-    # TODO: Vypocti earned = qty * cena.
-    #       Odecti z cargo, pokud klesne na 0 smaz klic (del).
-    #       Pricti ke kreditu, zavolej save_game(game) a vypis potvrzeni.
-    raise NotImplementedError
+    print(f"\n=== Prodej – {planet} ===")
+    print("0. Zpět")
+    for i, (zbozi, pocet) in enumerate(cargo_list, 1):
+        cena = ceny.get(zbozi, 0)
+        zisk = pocet * cena
+        print(f"{i}. {zbozi:12} {pocet} ks  →  {cena} kr/ks  (celkem {zisk} kr)")
 
+    # 3. Načti volbu
+    while True:
+        try:
+            volba = int(input("Co chceš prodat: "))
+            if volba == 0:
+                return
+            if volba < 1 or volba > len(cargo_list):
+                print(f"Zadej 0–{len(cargo_list)}.")
+                continue
+            break
+        except ValueError:
+            print("Zadej číslo.")
 
-##############################################################
-### CAST 5: Zobrazeni
-##############################################################
+    zbozi, available = cargo_list[volba - 1]
+    cena = ceny.get(zbozi, 0)
+
+    # 4. Načti množství
+    while True:
+        try:
+            qty = int(input(f"Kolik kusů? (1–{available}): "))
+            if 0 < qty <= available:
+                break
+            print(f"Zadej 1–{available}.")
+        except ValueError:
+            print("Zadej číslo.")
+
+    # 5. Proveď prodej
+    earned = qty * cena
+    game["cargo"][zbozi] -= qty
+    if game["cargo"][zbozi] == 0:
+        del game["cargo"][zbozi]      # ← smaž klíč pokud je 0 kusů
+    game["credits"] += earned
+    save_game(game)
+    print(f"✅ Prodal jsi {qty}× {zbozi} za {earned} kreditů.")
+    input("Enter pro pokračování...")
+
 
 def clear():
-    """Vycisti terminal (funguje na Windows i Linux/Mac)."""
-    # TODO: Pouzij os.system() – na Windows prikaz "cls", jinde "clear".
-    #       Tip: os.name == "nt" vraci True na Windows.
-    raise NotImplementedError
+    # "nt" = Windows, cokoliv jiného = Linux/Mac
+    os.system("cls" if os.name == "nt" else "clear")
 
 
 def print_status(game):
-    """Vycisti terminal a vypise aktualni stav hry.
+    clear()
+    planet = game["location"]
+    ceny = PLANETS[planet]["prices"]
 
-    Zobrazi: den, kredity, cil, planetu, obsah nakladu, ceny na planet.
+    print("=" * 40)
+    print(f"  Den: {game['day']}  |  Kredity: {game['credits']} / {TARGET_CREDITS}")
+    print(f"  Planeta: {planet}")
+    print("=" * 40)
 
-    Args:
-        game: Slovnik s aktualnim stavem hry.
-    """
-    # TODO: Zavolej clear().
-    # TODO: Vypis hlavicku s game["day"], game["credits"], TARGET_CREDITS
-    #       a nazvem aktualni planety.
-    # TODO: Vypis obsah game["cargo"] s nazvem zbozi a poctem kusu.
-    #       Pokud je prazdny, vypis "(prazdny)".
-    # TODO: Vypis ceny vsech zbozi na aktualni planet.
-    raise NotImplementedError
+    # Náklad
+    print("\n📦 Náklad:")
+    if game["cargo"]:
+        for zbozi, pocet in game["cargo"].items():
+            print(f"  {zbozi:12} {pocet} ks")
+    else:
+        print("  (prázdný)")
 
+    # Ceny na planetě
+    print(f"\n💰 Ceny na {planet}:")
+    for zbozi, cena in ceny.items():
+        print(f"  {zbozi:12} {cena} kr/ks")
+    print()
 
-##############################################################
-### CAST 6: Hlavni smycka
-##############################################################
 
 def main():
-    """Hlavni smycka hry – nacte hru, opakuje: zobraz -> menu -> akce."""
-    # TODO: Zavolej load_game() a uloz vysledek do game.
-    # TODO: Spust nekonecnou smycku while True.
-    #         - Zavolej print_status(game).
-    #         - Vypis menu s moznostmi 1-4.
-    #         - Precti volbu hrace pres input().
-    #         - Podle volby zavolej prislusnou funkci nebo ukonci hru (break).
-    #         - Pro neplatnou volbu vypis chybu a cekej na Enter.
-    raise NotImplementedError
+    game = load_game()
 
+    while True:
+        print_status(game)
+        print("1. Cestovat")
+        print("2. Koupit zboží")
+        print("3. Prodat zboží")
+        print("4. Konec")
 
-if __name__ == "__main__":
-    # PRO TESTOVANI: Odkomentuj postupne po implementaci jednotlivych casti.
-    # game = new_game()
-    # print(game)
-    # print(cargo_used(game))
-    # print(generate_event())
-    # print_status(game)
-    main()
+        volba = input("\nTvoje volba: ").strip()
+
+        if volba == "1":
+            travel(game)
+        elif volba == "2":
+            buy_goods(game)
+        elif volba == "3":
+            sell_goods(game)
+        elif volba == "4":
+            print("Ukončuji hru. Na shledanou!")
+            break
+        else:
+            print("Neplatná volba.")
+            input("Enter pro pokračování...")
