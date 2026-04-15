@@ -405,3 +405,6 @@ def main():
         else:
             print("Neplatná volba.")
             input("Enter pro pokračování...")
+
+if __name__ == "__main__":
+    main()
