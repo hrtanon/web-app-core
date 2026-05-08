@@ -291,8 +291,9 @@ def buy_goods(game):
     game["credits"] -= qty * cena
     game["cargo"][zbozi] = game["cargo"].get(zbozi, 0) + qty
     save_game(game)
-    print(f"✅ Koupil jsi {qty}× {zbozi} za {qty * cena} kreditů.")
+    print(f"Koupil jsi {qty}× {zbozi} za {qty * cena} kreditů.")
     input("Enter pro pokračování...")
+    
 
 
 def sell_goods(game):
@@ -347,7 +348,7 @@ def sell_goods(game):
         del game["cargo"][zbozi]      # ← smaž klíč pokud je 0 kusů
     game["credits"] += earned
     save_game(game)
-    print(f"✅ Prodal jsi {qty}× {zbozi} za {earned} kreditů.")
+    print(f" Prodal jsi {qty}× {zbozi} za {earned} kreditů.")
     input("Enter pro pokračování...")
 
 
@@ -367,7 +368,7 @@ def print_status(game):
     print("=" * 40)
 
     # Náklad
-    print("\n📦 Náklad:")
+    print("\n Náklad:")
     if game["cargo"]:
         for zbozi, pocet in game["cargo"].items():
             print(f"  {zbozi:12} {pocet} ks")
@@ -375,7 +376,7 @@ def print_status(game):
         print("  (prázdný)")
 
     # Ceny na planetě
-    print(f"\n💰 Ceny na {planet}:")
+    print(f"\n Ceny na {planet}:")
     for zbozi, cena in ceny.items():
         print(f"  {zbozi:12} {cena} kr/ks")
     print()
