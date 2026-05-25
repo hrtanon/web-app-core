@@ -62,7 +62,7 @@ class Book:
 
     def __init__(self, title: str, author: str, year: int):
         self.title=title
-        self.autor=author
+        self.author=author
         self.year=year
         self.available=True
 
@@ -92,7 +92,7 @@ class Book:
             status="dustupna"
         else :
             status="nedostupna"
-        return status
+        return f"{self.title}{self.author} {self.year} je {status} "
 
 
 
@@ -107,6 +107,8 @@ library = [
 # Výpis knih v knihovně
 print("\nSeznam knih v knihovně:")
 
+for book in library:
+    print(book)
 
 
 
@@ -120,4 +122,7 @@ library[0].return_book()  # Pokus o vrácení již dostupné knihy
 
 # Znovu vypíšeme knihovnu po změnách
 print("\nAktualizovaný seznam knih v knihovně:")
+for book in library:
+    print(book)
+
 

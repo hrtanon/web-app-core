@@ -1,0 +1,7 @@
+[2026-05-14 15:45:50] [INFO   ] Uloženo do logu
+[2026-05-14 15:45:50] [INFO   ] Všechny záznamy výše + tento jsou v souboru ukazka_log.txt
+[2026-05-14 15:45:50] [ERROR  ] ZeroDivisionError: division by zero
+   Kontext: Pokus o dělení nulou
+  File "c:\Users\Uživatel\web--app-core\web-app-core-2\prg_library.py", line 560, in <module>
+  vysledek = 10 / 0
+  ~~~^~~
