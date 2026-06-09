@@ -256,7 +256,7 @@ class Library:
             data.append(book_data)
         with open(filename, "w" , encodig="utf -8") as F:
             json.dump(data, F, ensure_ascii=False, indent=2)
-        print(f"Knihovna uložena do souboru '{filename}'."))
+        print(f"Knihovna uložena do souboru '{filename}'.")
 
 
     def load_from_file(self, filename: str = "books.json"):
