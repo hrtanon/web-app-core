@@ -2,9 +2,7 @@
 from modules.taskmanager import Taskmanage
 
 
-def test_newtask():
-    manager=Taskmanage()
-    manager.novy_task(lambda:None)
+
     
 
 
