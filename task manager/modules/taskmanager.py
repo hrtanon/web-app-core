@@ -29,7 +29,7 @@ class Taskmanage():
         for task in self.tasks:
             if task.status==status:
                 task_status.append(task)
-                return task_status
+        return task_status
     
     def najit(self,id):
         for task in self.tasks:
@@ -37,7 +37,8 @@ class Taskmanage():
                 
                 return task
             else:
-                print("task  neni")
+                return None
+        
     
     def uprav(self,task_id,
             title: str | None = None,
@@ -66,9 +67,7 @@ class Taskmanage():
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path,"w", encoding="utf-8")as File:
             task_data=[]
-            for task in self.tasks:
-                task_data=[task.to_dic(task)]
-                json.dump(task_data, File, ensure_ascii=False, indent=2)
+            json.dump([t.to_dict() for t in self.tasks], File)
     
     def from_jas(self,path):
         if not os.path.exists(path):
