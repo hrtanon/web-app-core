@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../PythonWork2027_01"
+		},
+		{
+			"name": "web-app-core",
+			"path": "."
+		},
+		{
+			"name": "bomba",
+			"path": "../../bomba"
+		}
+	],
+	"settings": {}
+}
